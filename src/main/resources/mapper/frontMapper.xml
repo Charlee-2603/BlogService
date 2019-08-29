@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hunter.blog.modules.front.dao.IFrontDao">
+    <select id="getFrontConfig" parameterType="java.lang.String"
+            resultType="com.hunter.blog.modules.front.model.FrontDo">
+        select
+        f_key AS frontKey,
+        f_name AS frontName,
+        f_type AS frontType,
+        f_value AS frontValue
+        from
+        sys_front
+        <where>
+            <if test="frontKey != null and frontKey != ''">
+                AND f_key = #{frontKey}
+            </if>
+        </where>
+        AND is_deleted = 1
+    </select>
+</mapper>
