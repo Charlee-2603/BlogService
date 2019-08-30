@@ -4,15 +4,16 @@
     <select id="getFrontConfig" parameterType="java.lang.String"
             resultType="com.hunter.blog.modules.front.model.FrontDo">
         select
-        f_key AS frontKey,
-        f_name AS frontName,
-        f_type AS frontType,
-        f_value AS frontValue
+        fro_id AS frontId,
+        fro_key AS frontKey,
+        fro_name AS frontName,
+        fro_type AS frontType,
+        fro_value AS frontValue
         from
         sys_front
         <where>
             <if test="frontKey != null and frontKey != ''">
-                AND f_key = #{frontKey}
+                AND fro_key = #{frontKey}
             </if>
         </where>
         AND is_deleted = 1

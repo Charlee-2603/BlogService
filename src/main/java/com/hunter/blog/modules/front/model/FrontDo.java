@@ -6,18 +6,27 @@ import java.io.Serializable;
 
 /**
  * 前端默认展示页面实体类
+ *
  * @author ChenLiang
  * @version 1.0.0
  * @data: 2019/8/29 15:23
  */
 @Component
 public class FrontDo implements Serializable {
+    private Integer frontId;
     private String frontKey;
     private String frontType;
     private String frontName;
     private String frontValue;
     private Integer is_deleted;
 
+    public Integer getFrontId() {
+        return frontId;
+    }
+
+    public void setFrontId(Integer frontId) {
+        this.frontId = frontId;
+    }
 
     public String getFrontKey() {
         return frontKey;
@@ -62,7 +71,8 @@ public class FrontDo implements Serializable {
     @Override
     public String toString() {
         return "FrontDo{" +
-                "frontKey='" + frontKey + '\'' +
+                "frontId=" + frontId +
+                ", frontKey='" + frontKey + '\'' +
                 ", frontType='" + frontType + '\'' +
                 ", frontName='" + frontName + '\'' +
                 ", frontValue='" + frontValue + '\'' +

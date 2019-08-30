@@ -32,10 +32,7 @@ public class FrontServiceImpl implements IFrontService {
         map.put("sortNavBarList",frontDao.getFrontConfig("sortNavBar"));
 
         // 广告图片地址
-        map.put("adImgHref",frontDao.getFrontConfig("adImg"));
-
-        // 广告跳转链接
-        map.put("articleList",frontDao.getFrontConfig("adImgHref"));
+        map.put("adInfo",frontDao.getFrontConfig("adInfo"));
 
         // 文章列表
         return map;
