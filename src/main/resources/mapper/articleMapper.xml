@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hunter.blog.modules.article.dao.IArticleDao">
+    <select id="getArticles" resultType="com.hunter.blog.modules.article.model.ArticleDo">
+        select
+            art_id AS articleId,
+            art_title AS articleTitle,
+            art_desc AS articleDesc,
+            art_createTime AS articleCreateTime,
+            art_readnum AS articleReadNum,
+            art_comment AS articleComment
+        from
+            sys_article
+        where
+            is_deleted = 1 AND art_status = 1
+    </select>
+</mapper>

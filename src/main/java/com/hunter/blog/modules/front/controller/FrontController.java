@@ -1,12 +1,10 @@
 package com.hunter.blog.modules.front.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.github.pagehelper.PageHelper;
 import com.hunter.blog.modules.front.service.IFrontService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,9 +31,14 @@ public class FrontController {
      * @return
      */
     @RequestMapping(value = "/setHtml", method = RequestMethod.POST)
-    public String setHtml() {
+    public String setHtml(@RequestParam(defaultValue = "1") Integer pageIndex, @RequestParam(defaultValue = "10") Integer pageSize) {
         System.out.println("************setHtml*************");
+        System.out.println("pageSize：" + pageSize);
+        System.out.println("pageIndex：" + pageIndex);
+
         Map<String, Object> map = new HashMap<>(16);
+        map.put("pageIndex", pageIndex);
+        map.put("pageSize", pageSize);
         Map result = frontService.setHtml(map);
         return JSON.toJSONString(result);
     }

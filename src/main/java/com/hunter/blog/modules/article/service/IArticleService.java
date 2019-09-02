@@ -11,8 +11,9 @@ import java.util.Map;
  * @data: 2019/8/30 14:21
  * @version 1.0.0
  */
-public interface ArticleService {
-    
+public interface IArticleService {
+
+
     /**
      * 根据key获取文章列表
      * @param map
