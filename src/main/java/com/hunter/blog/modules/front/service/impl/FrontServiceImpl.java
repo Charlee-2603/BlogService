@@ -34,7 +34,10 @@ public class FrontServiceImpl implements IFrontService {
         map.put("logoImgUrl", frontDao.getFrontConfig("logoImg"));
 
         // 顶部导航栏列表
-        map.put("navBarList", frontDao.getFrontConfig("navBar"));
+        map.put("navBarList", frontDao.getFrontConfig("navBarTitle"));
+
+        //顶部导航栏按钮
+        map.put("navBarListBtn", frontDao.getFrontConfig("navBarBtn"));
 
         // 分类导航栏列表
         map.put("sortNavBarList", frontDao.getFrontConfig("sortNavBar"));
@@ -42,13 +45,12 @@ public class FrontServiceImpl implements IFrontService {
         // 广告图片地址
         map.put("adInfo", frontDao.getFrontConfig("adInfo"));
 
-        // 文章列表s
+        // 文章列表
         Integer pageIndex = (Integer) map.get("pageIndex");
         Integer pageSize = (Integer) map.get("pageSize");
 
         PageHelper.startPage(pageIndex, pageSize);
         Page<ArticleDo> articleList = articleDao.getArticles();
-        System.out.println(articleList);
         map.put("articleList", articleList);
         return map;
     }

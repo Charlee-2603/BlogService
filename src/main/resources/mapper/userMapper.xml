@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hunter.blog.modules.user.dao.IUserDao">
+    <!--  根据账号密码判断用户是否存在  -->
+    <select id="findUserInfo" parameterType="java.lang.String"
+            resultType="com.hunter.blog.modules.user.model.UserDo">
+        SELECT
+        u_avatar AS userAvatar,
+        u_nickname AS userNickname
+        FROM
+        sys_user
+        <where>
+            <if test="userName != null and userName != '' and userPwd != null and userPwd != ''">
+                AND u_name = #{userName} AND u_pwd = #{userPwd}
+            </if>
+        </where>
+        AND u_status = 1
+    </select>
+
+    <!--  添加用户  -->
+    <insert id="addUser" parameterType="com.hunter.blog.modules.user.model.UserDo">
+        insert into sys_user(u_id,u_name,u_pwd,u_tel,u_nickname,u_actualName,u_birthday,u_sex,u_createTime)
+        VALUES (null,#{userDo.userName},#{userDo.userPwd},#{userDo.userTel},#{userDo.userNickname},#{userDo.userActualName},#{userDo.userBirthday},#{userDo.userSex},#{userDo.userCreateTime})
+    </insert>
+
+
+    <!--  删除用户  -->
+    <update id="delUserById" parameterType="java.lang.Integer">
+        update sys_user set u_status = 0 where u_id = #{userId}
+    </update>
+</mapper>

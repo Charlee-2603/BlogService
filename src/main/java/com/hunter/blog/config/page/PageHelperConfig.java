@@ -2,12 +2,11 @@ package com.hunter.blog.config.page;
 
 import com.github.pagehelper.PageHelper;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 import java.util.Properties;
 
 /**
- * 分页配置
+ * 分页插件配置
  * @author ChenLiang
  * @data: 2019/9/2 10:58
  * @version 1.0.0
