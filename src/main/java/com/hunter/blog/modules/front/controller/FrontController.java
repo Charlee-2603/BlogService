@@ -1,7 +1,7 @@
 package com.hunter.blog.modules.front.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.github.pagehelper.PageHelper;
+import com.hunter.blog.core.data.DataResult;
 import com.hunter.blog.modules.front.service.IFrontService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -32,14 +32,11 @@ public class FrontController {
      */
     @RequestMapping(value = "/setHtml", method = RequestMethod.POST)
     public String setHtml(@RequestParam(defaultValue = "1") Integer pageIndex, @RequestParam(defaultValue = "10") Integer pageSize) {
-        System.out.println("************setHtml*************");
-        System.out.println("pageSize：" + pageSize);
-        System.out.println("pageIndex：" + pageIndex);
-
         Map<String, Object> map = new HashMap<>(16);
         map.put("pageIndex", pageIndex);
         map.put("pageSize", pageSize);
         Map result = frontService.setHtml(map);
-        return JSON.toJSONString(result);
+        DataResult<Map> data = new DataResult<>(result);
+        return JSON.toJSONString(data);
     }
 }

@@ -6,6 +6,8 @@ import com.hunter.blog.modules.user.model.UserDo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 /**
  * 系统service接口实现类
@@ -21,18 +23,23 @@ public class SysServiceImpl implements ISysService {
     private IUserDao userDao;
 
     @Override
-    public UserDo login(UserDo user) {
+    public List<UserDo> login(UserDo user) {
         // 用户名
         String userName = user.getUserName();
         // 用户密码
         String userPwd = user.getUserPwd();
-        UserDo us = userDao.findUserInfo(userName, userPwd);
-        return us;
+        return userDao.findUserInfo(userName, userPwd);
     }
 
     @Override
     public int userRegister(UserDo userDo) {
         int res = userDao.addUser(userDo);
         return res;
+    }
+
+    @Override
+    public Integer getUserByName(UserDo userDo) {
+        String userName = userDo.getUserName();
+        return userDao.getUserByName(userName);
     }
 }

@@ -5,6 +5,8 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * 用户dao接口
  *
@@ -23,7 +25,7 @@ public interface IUserDao {
      * @param userPwd
      * @return
      */
-    UserDo findUserInfo(@Param("userName") String userName, @Param("userPwd") String userPwd);
+    List<UserDo> findUserInfo(@Param("userName") String userName, @Param("userPwd") String userPwd);
 
     /**
      * 添加用户
@@ -47,4 +49,11 @@ public interface IUserDao {
      * @return
      */
     Integer updateUserById(UserDo userDo);
+
+    /**
+     * 根据用户名查找用户是否存在
+     * @param userName
+     * @return
+     */
+    Integer getUserByName(@Param("userName") String userName);
 }

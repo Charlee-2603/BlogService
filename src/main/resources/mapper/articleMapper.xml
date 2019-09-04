@@ -13,5 +13,7 @@
             sys_article
         where
             is_deleted = 1 AND art_status = 1
+        ORDER BY
+            art_readnum desc
     </select>
 </mapper>

@@ -17,15 +17,30 @@
         AND u_status = 1
     </select>
 
+    <!--  根据用户名称查找用户名是否存在 -->
+    <select id="getUserByName" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select
+            count(1)
+        from
+            sys_user
+        <where>
+            <if test="userName != '' and userName != null">
+                AND u_name = #{userName}
+            </if>
+            AND u_status = 1
+        </where>
+    </select>
+
     <!--  添加用户  -->
     <insert id="addUser" parameterType="com.hunter.blog.modules.user.model.UserDo">
         insert into sys_user(u_id,u_name,u_pwd,u_tel,u_nickname,u_actualName,u_birthday,u_sex,u_createTime)
         VALUES (null,#{userDo.userName},#{userDo.userPwd},#{userDo.userTel},#{userDo.userNickname},#{userDo.userActualName},#{userDo.userBirthday},#{userDo.userSex},#{userDo.userCreateTime})
     </insert>
 
-
     <!--  删除用户  -->
     <update id="delUserById" parameterType="java.lang.Integer">
         update sys_user set u_status = 0 where u_id = #{userId}
     </update>
+
+
 </mapper>

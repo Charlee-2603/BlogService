@@ -2,6 +2,8 @@ package com.hunter.blog.modules.sys.service;
 
 import com.hunter.blog.modules.user.model.UserDo;
 
+import java.util.List;
+
 /**
  * 系统service接口
  * @author ChenLiang
@@ -15,7 +17,7 @@ public interface ISysService {
      * @param user
      * @return
      */
-    UserDo login(UserDo user);
+    List<UserDo> login(UserDo user);
 
     /**
      * 用户注册
@@ -23,4 +25,11 @@ public interface ISysService {
      * @return
      */
     int userRegister(UserDo userDo);
+
+    /**
+     * 根据用户名查找用户是否存在
+     * @param userDo
+     * @return
+     */
+    Integer getUserByName(UserDo userDo);
 }
