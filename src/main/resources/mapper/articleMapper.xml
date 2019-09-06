@@ -1,19 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hunter.blog.modules.article.dao.IArticleDao">
-    <select id="getArticles" resultType="com.hunter.blog.modules.article.model.ArticleDo">
-        select
-            art_id AS articleId,
-            art_title AS articleTitle,
-            art_desc AS articleDesc,
-            art_createTime AS articleCreateTime,
-            art_readnum AS articleReadNum,
-            art_comment AS articleComment
-        from
-            sys_article
-        where
-            is_deleted = 1 AND art_status = 1
-        ORDER BY
-            art_readnum desc
-    </select>
+    <resultMap id="articleMap" type="com.hunter.blog.modules.article.model.ArticleDo">
+        <id column="art_id" property="articleId"/>
+        <result column="art_title" property="articleTitle"/>
+        <result column="art_desc" property="articleDesc"/>
+        <result column="art_createTime" property="articleCreateTime"/>
+        <result column="art_readnum" property="articleReadNum"/>
+        <result column="art_comment" property="articleComment"/>
+        <association property="userDo" column="u_id" javaType="com.hunter.blog.modules.user.model.UserDo">
+            <id column="u_id" property="userId"/>
+            <result column="u_avatar" property="userAvatar"/>
+            <result column="u_nickname" property="userNickname"/>
+        </association>
+    </resultMap>
+    <select id="getArticles" resultMap="articleMap">
+            SELECT
+                a.art_id AS articleId,
+                a.art_title AS articleTitle,
+                a.art_desc AS articleDesc,
+                a.art_createTime AS articleCreateTime,
+                a.art_readnum AS articleReadNum,
+                a.art_comment AS articleComment,
+                a.u_id AS userId,
+                u.u_avatar AS userAvatar,
+                u.u_nickname AS userNickname
+            FROM
+                sys_article a LEFT JOIN sys_user u ON a.u_id = u.u_id
+            WHERE
+                is_deleted = 1
+                AND art_status = 1
+            ORDER BY
+                art_readnum desc
+        </select>
 </mapper>

@@ -1,8 +1,10 @@
 package com.hunter.blog.modules.user.model;
 
+import com.hunter.blog.modules.article.model.ArticleDo;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 用户实体类
@@ -117,6 +119,16 @@ public class UserDo implements Serializable {
      * 用户帐号状态描述
      */
     private String userStatusDesc;
+
+    private List<ArticleDo> articleList;
+
+    public List<ArticleDo> getArticleList() {
+        return articleList;
+    }
+
+    public void setArticleList(List<ArticleDo> articleList) {
+        this.articleList = articleList;
+    }
 
     public Integer getUserId() {
         return userId;

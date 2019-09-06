@@ -21,4 +21,11 @@ public interface IArticleService {
      * @return
      */
     List<ArticleDo> getArticleByKey(Map<String, Object> map, String key);
+
+    /**
+     * 发布文章
+     * @param articleDo
+     * @return
+     */
+    int addArticle(ArticleDo articleDo);
 }

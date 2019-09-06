@@ -41,5 +41,10 @@ public interface IArticleDao {
      */
     ArticleDo getArticleByArtcleId(@Param("articleId") Integer articleId);
 
-
+    /**
+     * 发布文章
+     * @param articleDo
+     * @return
+     */
+    Integer addArticle(ArticleDo articleDo);
 }

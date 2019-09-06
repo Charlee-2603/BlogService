@@ -1,5 +1,6 @@
 package com.hunter.blog.modules.article.model;
 
+import com.hunter.blog.modules.user.model.UserDo;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
@@ -60,6 +61,26 @@ public class ArticleDo implements Serializable {
      * 文章是否为推荐( 默认0 不是 / 1 是)
      */
     private Integer articleIsRecommend;
+
+    private UserDo userDo;
+
+    private Integer userId;
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
+    public UserDo getUserDo() {
+        return userDo;
+    }
+
+    public void setUserDo(UserDo userDo) {
+        this.userDo = userDo;
+    }
 
     public Integer getArticleId() {
         return articleId;
@@ -163,6 +184,8 @@ public class ArticleDo implements Serializable {
                 ", articleIsDeleted=" + articleIsDeleted +
                 ", articleStatus=" + articleStatus +
                 ", articleIsRecommend=" + articleIsRecommend +
+                ", userDo=" + userDo +
+                ", userId=" + userId +
                 '}';
     }
 }

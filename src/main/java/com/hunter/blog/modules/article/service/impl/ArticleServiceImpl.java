@@ -20,15 +20,19 @@ import java.util.Map;
 @Service
 public class ArticleServiceImpl implements IArticleService {
 
-//    @Autowired
-//    private IArticleDao articleDao;
-
+    @Autowired
+    private IArticleDao articleDao;
 
     @Override
     public List<ArticleDo> getArticleByKey(Map<String, Object> map, String key) {
         return null;
     }
 
+    @Override
+    public int addArticle(ArticleDo articleDo) {
+        int result = articleDao.addArticle(articleDo);
+        return 0;
+    }
 
 
 }
