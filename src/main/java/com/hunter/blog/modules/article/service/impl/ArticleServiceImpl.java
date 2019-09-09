@@ -1,5 +1,6 @@
 package com.hunter.blog.modules.article.service.impl;
 
+import com.github.pagehelper.Page;
 import com.hunter.blog.modules.article.dao.IArticleDao;
 import com.hunter.blog.modules.article.model.ArticleDo;
 import com.hunter.blog.modules.article.service.IArticleService;
@@ -23,16 +24,55 @@ public class ArticleServiceImpl implements IArticleService {
     @Autowired
     private IArticleDao articleDao;
 
+    /**
+     * 发布文章
+     *
+     * @param articleDo
+     * @param userId
+     * @return
+     */
+    @Override
+    public int addArticle(ArticleDo articleDo, int userId) {
+        int result = articleDao.addArticle(articleDo, userId);
+        return result;
+    }
+
+    /**
+     * 搜索文章
+     *
+     * @param condition
+     * @return
+     */
+    @Override
+    public Page<ArticleDo> getArticleByCondition(String condition) {
+        return articleDao.getArticleByCondition(condition);
+    }
+
+    /**
+     * 删除文章
+     *
+     * @param articleId
+     * @return
+     */
+    @Override
+    public Integer deleteArticleById(int articleId) {
+        return articleDao.deleteArticleById(articleId);
+    }
+
     @Override
     public List<ArticleDo> getArticleByKey(Map<String, Object> map, String key) {
         return null;
     }
 
+    /**
+     * 修改文章
+     *
+     * @param articleDo
+     * @return
+     */
     @Override
-    public int addArticle(ArticleDo articleDo) {
-        int result = articleDao.addArticle(articleDo);
-        return 0;
+    public Integer updateArticle(ArticleDo articleDo) {
+        return articleDao.updateArticle(articleDo);
     }
-
 
 }

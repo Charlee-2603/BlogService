@@ -81,4 +81,21 @@ public class SysController {
         data = new DataResult<>(CodeMsg.BIND_ERROR);
         return JSON.toJSONString(data);
     }
+
+    /**
+     * 找回密码
+     * @param userDo
+     * @param code
+     * @return
+     */
+    @RequestMapping("/findPwd")
+    public String findPwd(UserDo userDo, String code) {
+        System.out.println("\u001B[36m" + "findPwd()方法执行了..." + "\u001B[36m");
+        CodeMsg codeMsg = null;
+        if (userDo != null && code != null) {
+//            sysService.findPwd(userDo);
+        }
+        codeMsg = CodeMsg.BIND_ERROR;
+        return JSON.toJSONString(codeMsg);
+    }
 }

@@ -1,14 +1,13 @@
 package com.hunter.blog.modules.article.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.github.pagehelper.Page;
 import com.hunter.blog.core.data.CodeMsg;
 import com.hunter.blog.core.data.DataResult;
-import com.hunter.blog.modules.article.dao.IArticleDao;
 import com.hunter.blog.modules.article.model.ArticleDo;
 import com.hunter.blog.modules.article.service.IArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * 文章前端控制类
@@ -32,11 +31,12 @@ public class ArticleController {
      * @return
      */
     @RequestMapping(value = "/search", method = RequestMethod.GET)
-    public String search(HttpServletRequest request) {
-        System.out.println("搜索内容: " + request.getParameter("condition"));
-        return "";
+    public String search(@RequestParam(value = "condition", defaultValue = "") String condition) {
+        System.out.println("搜索内容: " + condition);
+        Page<ArticleDo> articleList = articleService.getArticleByCondition(condition);
+        DataResult<Object> data = new DataResult<>(articleList);
+        return JSON.toJSONString(data);
     }
-
 
     /**
      * 发布文章
@@ -44,16 +44,21 @@ public class ArticleController {
      * @param articleDo
      * @return
      */
-    @RequestMapping("/post")
-    public String addArticle(ArticleDo articleDo) {
+    @RequestMapping(value = "/post", method = RequestMethod.POST)
+    public String addArticle(ArticleDo articleDo, int userId) {
         DataResult<Object> data = null;
-        if (articleDo != null) {
-            int result = articleService.addArticle(articleDo);
+        if (userId > 0) {
+            if (articleDo != null) {
+                int result = articleService.addArticle(articleDo, userId);
+                if (result == 1) {
+                    data = new DataResult(result);
+                    return JSON.toJSONString(data);
+                }
+            }
         }
         data = new DataResult<>(CodeMsg.BIND_ERROR);
-        return "";
+        return JSON.toJSONString(data);
     }
-
 
     /**
      * 删除文章
@@ -61,8 +66,17 @@ public class ArticleController {
      * @param articleId
      * @return
      */
+    @RequestMapping(value = "/del", method = RequestMethod.GET)
     public String deleteArticle(int articleId) {
-        return "";
+        System.out.println("\u001B[36m" + "deleteArticle()方法执行了..." + "\u001B[36m");
+        DataResult<Object> data = null;
+        Integer artId = articleService.deleteArticleById(articleId);
+        if (artId == 1) {
+            data = new DataResult(artId);
+            return JSON.toJSONString(data);
+        }
+        data = new DataResult<>(CodeMsg.BIND_ERROR);
+        return JSON.toJSONString(data);
     }
 
     /**
@@ -71,7 +85,19 @@ public class ArticleController {
      * @param articleDo
      * @return
      */
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
     public String updateArticle(ArticleDo articleDo) {
-        return "";
+        CodeMsg data = null;
+        if (articleDo != null) {
+            int result = articleService.updateArticle(articleDo);
+            if (result == 1) {
+                data = new CodeMsg("200", "更新成功!");
+                return JSON.toJSONString(data);
+            }
+            data = new CodeMsg("0", "更新失败!");
+            return JSON.toJSONString(data);
+        }
+        data = CodeMsg.BIND_ERROR;
+        return JSON.toJSONString(data);
     }
 }

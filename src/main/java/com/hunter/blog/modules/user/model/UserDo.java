@@ -120,16 +120,6 @@ public class UserDo implements Serializable {
      */
     private String userStatusDesc;
 
-    private List<ArticleDo> articleList;
-
-    public List<ArticleDo> getArticleList() {
-        return articleList;
-    }
-
-    public void setArticleList(List<ArticleDo> articleList) {
-        this.articleList = articleList;
-    }
-
     public Integer getUserId() {
         return userId;
     }

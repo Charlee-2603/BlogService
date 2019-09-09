@@ -31,10 +31,15 @@ public class FrontController {
      * @return
      */
     @RequestMapping(value = "/setHtml", method = RequestMethod.POST)
-    public String setHtml(@RequestParam(defaultValue = "1") Integer pageIndex, @RequestParam(defaultValue = "10") Integer pageSize) {
+    public String setHtml(@RequestParam(defaultValue = "1") Integer pageIndex,
+                          @RequestParam(defaultValue = "10") Integer pageSize,
+                          @RequestParam(defaultValue = "2") Integer frontId,
+                          @RequestParam(defaultValue = "13") Integer sortNavId) {
         Map<String, Object> map = new HashMap<>(16);
         map.put("pageIndex", pageIndex);
         map.put("pageSize", pageSize);
+        map.put("frontId", frontId);
+        map.put("sortNavId", sortNavId);
         Map result = frontService.setHtml(map);
         DataResult<Map> data = new DataResult<>(result);
         return JSON.toJSONString(data);

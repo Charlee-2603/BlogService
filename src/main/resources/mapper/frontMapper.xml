@@ -1,19 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hunter.blog.modules.front.dao.IFrontDao">
+    <!--  默认前端展示数据  -->
     <select id="getFrontConfig" parameterType="java.lang.String"
             resultType="com.hunter.blog.modules.front.model.FrontDo">
         select
         fro_id AS frontId,
+        fat_id AS fatherId,
+        fro_type AS frontType,
         fro_key AS frontKey,
         fro_name AS frontName,
-        fro_type AS frontType,
         fro_value AS frontValue
         from
         sys_front
         <where>
-            <if test="frontKey != null and frontKey != ''">
-                AND fro_key = #{frontKey}
+            <if test="frontType != null and frontType != ''">
+                AND fro_type = #{frontType}
+            </if>
+        </where>
+        AND is_deleted = 1
+    </select>
+
+    <!--  获取父栏目下子栏目  -->
+    <select id="getSortNavConfig" parameterType="Integer" resultType="com.hunter.blog.modules.front.model.FrontDo">
+        select
+        fro_id AS frontId,
+        fro_name AS frontName,
+        fro_key AS frontKey,
+        fro_value AS frontValue
+        from
+        sys_front
+        <where>
+            <if test="frontType != null and frontType != ''">
+                AND fro_type = #{frontType}
+            </if>
+            <if test="frontId != null and frontId != ''">
+                AND fat_id = #{frontId}
             </if>
         </where>
         AND is_deleted = 1

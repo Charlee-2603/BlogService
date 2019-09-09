@@ -2,35 +2,112 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hunter.blog.modules.article.dao.IArticleDao">
     <resultMap id="articleMap" type="com.hunter.blog.modules.article.model.ArticleDo">
-        <id column="art_id" property="articleId"/>
-        <result column="art_title" property="articleTitle"/>
-        <result column="art_desc" property="articleDesc"/>
-        <result column="art_createTime" property="articleCreateTime"/>
-        <result column="art_readnum" property="articleReadNum"/>
-        <result column="art_comment" property="articleComment"/>
+        <id column="art_id" property="articleId" jdbcType="INTEGER"/>
+        <result column="art_key" property="articleKey" jdbcType="VARCHAR"/>
+        <result column="art_createTime" property="articleCreateTime" jdbcType="DATE"/>
+        <result column="art_readnum" property="articleReadNum" jdbcType="INTEGER"/>
+        <result column="art_title" property="articleTitle" jdbcType="VARCHAR"/>
+        <result column="art_desc" property="articleDesc" jdbcType="VARCHAR"/>
+        <result column="art_content" property="articleContent" jdbcType="LONGVARCHAR"/>
+        <result column="art_comment" property="articleComment" jdbcType="INTEGER"/>
+        <result column="is_delete" property="articleIsDeleted" jdbcType="VARCHAR"/>
+        <result column="status" property="articleStatus" jdbcType="VARCHAR"/>
+        <result column="is_recommend" property="articleIsRecommend" jdbcType="INTEGER"/>
         <association property="userDo" column="u_id" javaType="com.hunter.blog.modules.user.model.UserDo">
-            <id column="u_id" property="userId"/>
-            <result column="u_avatar" property="userAvatar"/>
-            <result column="u_nickname" property="userNickname"/>
+            <id column="u_id" property="userId" jdbcType="INTEGER"/>
+            <result column="u_uuid" property="userUUID" jdbcType="VARCHAR"/>
+            <result column="u_name" property="userName" jdbcType="VARCHAR"/>
+            <result column="u_pwd" property="userPwd" jdbcType="VARCHAR"/>
+            <result column="u_tel" property="userTel" jdbcType="VARCHAR"/>
+            <result column="u_avatar" property="userAvatar" jdbcType="VARCHAR"/>
+            <result column="u_nickname" property="userNickname" jdbcType="VARCHAR"/>
+            <result column="u_actualName" property="userActualName" jdbcType="VARCHAR"/>
+            <result column="u_industry" property="userIndustry" jdbcType="VARCHAR"/>
+            <result column="u_city" property="userCity" jdbcType="VARCHAR"/>
+            <result column="u_birthday" property="userBirthday" jdbcType="DATE"/>
+            <result column="u_sex" property="userSex" jdbcType="CHAR"/>
+            <result column="u_signature" property="userSignature" jdbcType="VARCHAR"/>
+            <result column="u_desc" property="userDesc" jdbcType="VARCHAR"/>
+            <result column="u_fan" property="userFan" jdbcType="INTEGER"/>
+            <result column="u_attention" property="userAttention" jdbcType="INTEGER"/>
+            <result column="u_integral" property="userIntegral" jdbcType="INTEGER"/>
+            <result column="u_createTime" property="userCreateTime" jdbcType="DATE"/>
+            <result column="u_status" property="userStatus" jdbcType="INTEGER"/>
+            <result column="u_statusDesc" property="userStatusDesc" jdbcType="VARCHAR"/>
         </association>
     </resultMap>
-    <select id="getArticles" resultMap="articleMap">
-            SELECT
-                a.art_id AS articleId,
-                a.art_title AS articleTitle,
-                a.art_desc AS articleDesc,
-                a.art_createTime AS articleCreateTime,
-                a.art_readnum AS articleReadNum,
-                a.art_comment AS articleComment,
-                a.u_id AS userId,
-                u.u_avatar AS userAvatar,
-                u.u_nickname AS userNickname
-            FROM
-                sys_article a LEFT JOIN sys_user u ON a.u_id = u.u_id
-            WHERE
-                is_deleted = 1
-                AND art_status = 1
-            ORDER BY
-                art_readnum desc
-        </select>
+
+    <!--  添加文章  -->
+    <insert id="addArticle">
+        INSERT INTO
+            sys_article(fro_id, u_id, art_createTime, art_content, art_title, art_desc)
+        VALUES(null,#{userId},#{articleDo.articleCreateTime},#{articleDo.articleContent},#{articleDo.articleTitle},#{articleDo.articleDesc})
+    </insert>
+
+    <!--  删除文章  -->
+    <update id="deleteArticleById" parameterType="int">
+        UPDATE sys_article SET is_deleted = 0 WHERE art_id =#{articleId}
+    </update>
+
+    <!--  修改文章  -->
+    <update id="updateArticle" parameterType="com.hunter.blog.modules.article.model.ArticleDo">
+        UPDATE
+            sys_article
+        SET
+            art_title = #{articleDo.articleTitle}, art_desc = #{articleDo.articleDesc},art_content = #{articleDo.articleContent},art_createtime = #{articleDo.articleCreateTime}
+        WHERE
+            art_id = #{articleDo.articleId}
+    </update>
+
+    <!--  获取全部文章  -->
+    <select id="getArticles" parameterType="Integer" resultMap="articleMap">
+        SELECT
+        a.art_id,
+        a.art_title,
+        a.art_desc,
+        a.art_createTime,
+        a.art_readnum,
+        a.art_comment,
+        u.u_id,
+        u.u_avatar,
+        u.u_nickname
+        FROM
+        sys_article a
+        LEFT JOIN sys_user u ON a.u_id = u.u_id
+        INNER JOIN sys_art_front b on a.art_id = b.art_id
+        <where>
+            <if test="sortNavId != null and sortNavId != ''">
+                AND b.fro_id = #{sortNavId}
+            </if>
+            AND a.is_deleted = 1
+            AND a.art_status = 1
+        </where>
+        ORDER BY
+        a.art_readnum desc
+    </select>
+
+    <!--  搜索文章  -->
+    <select id="getArticleByCondition" resultMap="articleMap">
+        select
+        a.art_id,
+        a.art_title AS articleTitle,
+        a.art_desc AS articleDesc,
+        a.art_createTime AS articleCreateTime,
+        a.art_readnum AS articleReadNum,
+        a.art_comment AS articleComment,
+        u.u_id,
+        u.u_avatar AS userAvatar,
+        u.u_nickname AS userNickname
+        from
+        sys_article a left JOIN sys_user u ON a.u_id = u.u_id
+        <where>
+            <if test=" condition != null and condition != ''">
+                AND a.art_title LIKE CONCAT('%',#{condition},'%')
+            </if>
+            AND a.is_deleted = 1
+            AND a.art_status = 1
+        </where>
+        ORDER BY
+        a.art_readnum desc
+    </select>
 </mapper>

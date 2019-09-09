@@ -10,20 +10,54 @@ import java.util.List;
 
 /**
  * 文章dao接口
+ *
  * @author ChenLiang
- * @data: 2019/9/2 13:50
  * @version 1.0.0
+ * @data: 2019/9/2 13:50
  */
 @Repository
 @Mapper
 public interface IArticleDao {
 
     /**
-     * 查询所有文章
-     *
+     * 根据子栏目查找文章
+     * @param sortNavId
      * @return
      */
-    Page<ArticleDo> getArticles();
+    Page<ArticleDo> getArticles(@Param("sortNavId") Integer sortNavId);
+
+    /**
+     * 发布文章
+     *
+     * @param articleDo
+     * @param userId
+     * @return
+     */
+    Integer addArticle(@Param("articleDo") ArticleDo articleDo, @Param("userId") int userId);
+
+    /**
+     * 搜索文章
+     *
+     * @param condition
+     * @return
+     */
+    Page<ArticleDo> getArticleByCondition(@Param("condition") String condition);
+
+    /**
+     * 根据ID删除文章
+     *
+     * @param articleId
+     * @return
+     */
+    Integer deleteArticleById(@Param("articleId") int articleId);
+
+    /**
+     * 修改文章
+     *
+     * @param articleDo
+     * @return
+     */
+    Integer updateArticle(@Param("articleDo") ArticleDo articleDo);
 
     /**
      * 根据key获取文章列表
@@ -41,10 +75,5 @@ public interface IArticleDao {
      */
     ArticleDo getArticleByArtcleId(@Param("articleId") Integer articleId);
 
-    /**
-     * 发布文章
-     * @param articleDo
-     * @return
-     */
-    Integer addArticle(ArticleDo articleDo);
+
 }

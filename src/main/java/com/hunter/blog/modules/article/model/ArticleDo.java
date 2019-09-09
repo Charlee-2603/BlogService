@@ -1,9 +1,11 @@
 package com.hunter.blog.modules.article.model;
 
+import com.hunter.blog.modules.front.model.FrontDo;
 import com.hunter.blog.modules.user.model.UserDo;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 文章实体类
@@ -46,41 +48,26 @@ public class ArticleDo implements Serializable {
      * 文章评论
      */
     private String articleComment;
-
     /**
      * 文章是否删除 (0 删除 / 默认1 未删)
      */
     private Integer articleIsDeleted;
-
     /**
      * 文章状态 (0 未发 / 默认1 发布)
      */
     private Integer articleStatus;
-
     /**
      * 文章是否为推荐( 默认0 不是 / 1 是)
      */
     private Integer articleIsRecommend;
-
+    /**
+     * 用户对象
+     */
     private UserDo userDo;
-
-    private Integer userId;
-
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
-
-    public UserDo getUserDo() {
-        return userDo;
-    }
-
-    public void setUserDo(UserDo userDo) {
-        this.userDo = userDo;
-    }
+    /**
+     * 栏目对象
+     */
+    private List<FrontDo> frontDos;
 
     public Integer getArticleId() {
         return articleId;
@@ -170,6 +157,22 @@ public class ArticleDo implements Serializable {
         this.articleIsRecommend = articleIsRecommend;
     }
 
+    public UserDo getUserDo() {
+        return userDo;
+    }
+
+    public void setUserDo(UserDo userDo) {
+        this.userDo = userDo;
+    }
+
+    public List<FrontDo> getFrontDos() {
+        return frontDos;
+    }
+
+    public void setFrontDos(List<FrontDo> frontDos) {
+        this.frontDos = frontDos;
+    }
+
     @Override
     public String toString() {
         return "ArticleDo{" +
@@ -185,7 +188,7 @@ public class ArticleDo implements Serializable {
                 ", articleStatus=" + articleStatus +
                 ", articleIsRecommend=" + articleIsRecommend +
                 ", userDo=" + userDo +
-                ", userId=" + userId +
+                ", frontDos=" + frontDos +
                 '}';
     }
 }

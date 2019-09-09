@@ -1,8 +1,10 @@
 package com.hunter.blog.modules.front.model;
 
+import com.hunter.blog.modules.article.model.ArticleDo;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 前端默认展示页面实体类
@@ -13,12 +15,39 @@ import java.io.Serializable;
  */
 @Component
 public class FrontDo implements Serializable {
+    /**
+     * 父栏目id
+     */
     private Integer frontId;
+    /**
+     *  子栏目id
+     */
+    private Integer fatherId;
+    /**
+     * 分类key
+     */
     private String frontKey;
+    /**
+     * 栏目类型
+     */
     private String frontType;
+    /**
+     * 栏目名称
+     */
     private String frontName;
+    /**
+     * 栏目链接
+     */
     private String frontValue;
+    /**
+     * 栏目是否删除
+     */
     private Integer is_deleted;
+    /**
+     * 文章对象（多对多）
+     * @return
+     */
+    private List<ArticleDo> articleDos;
 
     public Integer getFrontId() {
         return frontId;
@@ -26,6 +55,14 @@ public class FrontDo implements Serializable {
 
     public void setFrontId(Integer frontId) {
         this.frontId = frontId;
+    }
+
+    public Integer getFatherId() {
+        return fatherId;
+    }
+
+    public void setFatherId(Integer fatherId) {
+        this.fatherId = fatherId;
     }
 
     public String getFrontKey() {
@@ -68,15 +105,25 @@ public class FrontDo implements Serializable {
         this.is_deleted = is_deleted;
     }
 
+    public List<ArticleDo> getArticleDos() {
+        return articleDos;
+    }
+
+    public void setArticleDos(List<ArticleDo> articleDos) {
+        this.articleDos = articleDos;
+    }
+
     @Override
     public String toString() {
         return "FrontDo{" +
                 "frontId=" + frontId +
+                ", fatherId=" + fatherId +
                 ", frontKey='" + frontKey + '\'' +
                 ", frontType='" + frontType + '\'' +
                 ", frontName='" + frontName + '\'' +
                 ", frontValue='" + frontValue + '\'' +
                 ", is_deleted=" + is_deleted +
+                ", articleDos=" + articleDos +
                 '}';
     }
 }
