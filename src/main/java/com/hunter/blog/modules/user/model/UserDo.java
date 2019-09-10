@@ -1,10 +1,8 @@
 package com.hunter.blog.modules.user.model;
 
-import com.hunter.blog.modules.article.model.ArticleDo;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * 用户实体类

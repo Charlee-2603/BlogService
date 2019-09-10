@@ -1,6 +1,7 @@
 package com.hunter.blog.modules.user.dao;
 
 import com.hunter.blog.modules.user.model.UserDo;
+import com.hunter.blog.modules.user.model.UserDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -20,12 +21,10 @@ public interface IUserDao {
 
     /**
      * 判断用户是否存在
-     *
-     * @param userName
-     * @param userPwd
+     * @param userDto
      * @return
      */
-    List<UserDo> findUserInfo(@Param("userName") String userName, @Param("userPwd") String userPwd);
+    List<UserDto> findUserInfo(@Param("userDto") UserDto userDto);
 
     /**
      * 添加用户

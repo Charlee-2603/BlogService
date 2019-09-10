@@ -4,8 +4,10 @@ import com.alibaba.fastjson.JSON;
 import com.hunter.blog.core.data.DataResult;
 import com.hunter.blog.modules.front.service.IFrontService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,7 +36,9 @@ public class FrontController {
     public String setHtml(@RequestParam(defaultValue = "1") Integer pageIndex,
                           @RequestParam(defaultValue = "10") Integer pageSize,
                           @RequestParam(defaultValue = "2") Integer frontId,
-                          @RequestParam(defaultValue = "13") Integer sortNavId) {
+                          @RequestParam(defaultValue = "13") Integer sortNavId,
+                          HttpServletRequest  request) {
+        System.out.println("bbbb,:" + request.getSession().getId());
         Map<String, Object> map = new HashMap<>(16);
         map.put("pageIndex", pageIndex);
         map.put("pageSize", pageSize);
