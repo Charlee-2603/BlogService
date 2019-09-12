@@ -5,9 +5,13 @@ import com.github.pagehelper.Page;
 import com.hunter.blog.core.data.CodeMsg;
 import com.hunter.blog.core.data.DataResult;
 import com.hunter.blog.modules.article.model.ArticleDo;
+import com.hunter.blog.modules.article.model.ArticleDto;
 import com.hunter.blog.modules.article.service.IArticleService;
+import com.hunter.blog.modules.front.model.FrontDo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * 文章前端控制类
@@ -38,26 +42,23 @@ public class ArticleController {
         return JSON.toJSONString(data);
     }
 
+    @RequestMapping("/label")
+    public String getArticleLabel() {
+        System.out.println("\u001B[36m" + "getArticleLabel()方法执行了..." + "\u001B[36m");
+        DataResult res = articleService.getArticleLabel();
+        return JSON.toJSONString(res);
+    }
+
     /**
      * 发布文章
      *
-     * @param articleDo
+     * @param articleDto
      * @return
      */
     @RequestMapping(value = "/post", method = RequestMethod.POST)
-    public String addArticle(ArticleDo articleDo, int userId) {
-        DataResult<Object> data = null;
-        if (userId > 0) {
-            if (articleDo != null) {
-                int result = articleService.addArticle(articleDo, userId);
-                if (result == 1) {
-                    data = new DataResult(result);
-                    return JSON.toJSONString(data);
-                }
-            }
-        }
-        data = new DataResult<>(CodeMsg.BIND_ERROR);
-        return JSON.toJSONString(data);
+    public String addArticle(@RequestBody ArticleDto articleDto) {
+        DataResult res = articleService.addArticle(articleDto);
+        return JSON.toJSONString(res);
     }
 
     /**

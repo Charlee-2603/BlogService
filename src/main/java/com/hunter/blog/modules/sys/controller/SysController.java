@@ -1,6 +1,7 @@
 package com.hunter.blog.modules.sys.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.google.code.kaptcha.Producer;
 import com.hunter.blog.core.data.CodeMsg;
 import com.hunter.blog.core.data.DataResult;
@@ -8,11 +9,7 @@ import com.hunter.blog.modules.sys.service.ISysService;
 import com.hunter.blog.modules.user.model.UserDo;
 import com.hunter.blog.modules.user.model.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import redis.clients.jedis.Jedis;
 import sun.misc.BASE64Encoder;
 
@@ -43,18 +40,36 @@ public class SysController {
     private Producer captchaProducer = null;
 
     /**
+     * 用户是否处于登录状态
+     * @param token
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/uType", method = RequestMethod.POST)
+    public String userIsLogin(@RequestBody String token, HttpServletRequest request) {
+        HashMap<String, Object> map = new HashMap<>(16);
+        JSONObject obj = JSONObject.parseObject(token);
+        map.put("sessionId", request.getSession().getId());
+        map.put("uid", obj.getString("uid"));
+        map.put("tokenId", obj.getString("tokenId"));
+        DataResult res = sysService.userIsLogin(map);
+        return JSON.toJSONString(res);
+    }
+
+    /**
      * 用户登录
      *
      * @param user
      * @return
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public String userLogin(UserDto user, HttpServletRequest  request) {
-        System.out.println("\u001B[36m" + "login()方法执行了..." + "\u001B[36m");
-        System.out.println("aaaaa,:" + request.getSession().getId());
+    public String userLogin(UserDto user, HttpServletRequest request) {
+        System.out.println("\u001B[36m" + "*******访问了用户登录接口*******" + "\u001B[36m");
         Map<String, Object> map = new HashMap<>(16);
-        DataResult<UserDo> data = sysService.login(user, map);
-        return JSON.toJSONString(data);
+        String sessionId = request.getSession().getId();
+        map.put("sessionId", sessionId);
+        DataResult<UserDo> res = sysService.login(user, map);
+        return JSON.toJSONString(res);
     }
 
     /**
@@ -67,10 +82,8 @@ public class SysController {
      */
     @RequestMapping(value = "/code", method = RequestMethod.POST)
     public String getCodeImage(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        System.out.println("\033[36;4m" + "getCodeImage()方法执行了..." + "\033[0m");
         Map<String, Object> map = new HashMap<>(16);
         String sessionId = request.getSession().getId();
-        System.out.println("第一次获取sessionId = " + sessionId);
 
         response.setDateHeader("Expires", 0);
         response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
@@ -80,12 +93,11 @@ public class SysController {
 
         //生成验证码
         String capText = captchaProducer.createText();
-        System.out.println("capText:" + capText);
+        System.out.println("验证码:" + capText);
+
+        // 把sessionId和验证码已key-value的形式存储在redis中
         Jedis jedis = new Jedis();
         jedis.set(sessionId, capText);
-
-        String result = jedis.get(sessionId);
-        System.out.println("redis中：" + result);
 
         //向客户端写出
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -100,7 +112,6 @@ public class SysController {
             outputStream.close();
         }
         map.put("codeImg", base64Img);
-        map.put("sessionId", sessionId);
         return JSON.toJSONString(map);
     }
 

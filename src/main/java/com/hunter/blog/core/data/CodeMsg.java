@@ -10,10 +10,15 @@ package com.hunter.blog.core.data;
 public class CodeMsg {
     private String code;
     private String msg;
+    private String type;
 
-    public static CodeMsg SUCCESS = new CodeMsg("200", "success");
-    public static CodeMsg SERVER_ERROR = new CodeMsg("100", "系统异常!");
+    public static CodeMsg SUCCESS = new CodeMsg("0", "请求成功", "success");
+    public static CodeMsg ERROR = new CodeMsg("-1", "请求失败", "error");
+    public static CodeMsg REQUEST_PARAMETER_ERROR = new CodeMsg("105", "请求参数异常", "error");
+
     public static CodeMsg BIND_ERROR = new CodeMsg("101", "参数异常!");
+    public static CodeMsg SERVER_ERROR = new CodeMsg("100", "系统异常!");
+
     public static CodeMsg SESSION_ERROR = new CodeMsg("102", "session异常！");
     public static CodeMsg REQUEST_ERROR = new CodeMsg("103", "非法请求!");
     public static CodeMsg REQUEST_OVER_LIMT = new CodeMsg("104", "请求次数过多！");
@@ -32,6 +37,12 @@ public class CodeMsg {
         this.msg = msg;
     }
 
+    public CodeMsg(String code, String msg, String type) {
+        this.code = code;
+        this.msg = msg;
+        this.type = type;
+    }
+
     public String getCode() {
         return code;
     }
@@ -46,6 +57,15 @@ public class CodeMsg {
 
     public void setMsg(String msg) {
         this.msg = msg;
+    }
+
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     @Override

@@ -22,11 +22,43 @@ public class DataResult<T> implements Serializable {
     private String msg;
 
     /**
+     * 请求状态
+     */
+    private String type;
+
+    /**
      * 请求数据
      */
     private T data;
 
     public DataResult() {
+    }
+
+    /**
+     * 成功且返回data
+     *
+     * @param data
+     */
+    public DataResult(CodeMsg codeMsg, T data) {
+        if (codeMsg != null) {
+            this.code = codeMsg.getCode();
+            this.msg = codeMsg.getMsg();
+            this.type = codeMsg.getType();
+            this.data = data;
+        }
+    }
+
+    /**
+     * 成功不返回data
+     *
+     * @param codeMsg
+     */
+    public DataResult(CodeMsg codeMsg) {
+        if (codeMsg != null) {
+            this.type = codeMsg.getType();
+            this.code = codeMsg.getCode();
+            this.msg = codeMsg.getMsg();
+        }
     }
 
     /**
@@ -53,17 +85,6 @@ public class DataResult<T> implements Serializable {
         this.data = data;
     }
 
-    /**
-     * 失败的构造函数
-     *
-     * @param codeMsg
-     */
-    public DataResult(CodeMsg codeMsg) {
-        if (codeMsg != null) {
-            this.code = codeMsg.getCode();
-            this.msg = codeMsg.getMsg();
-        }
-    }
 
     /**
      * 成功的时候调用
@@ -111,11 +132,20 @@ public class DataResult<T> implements Serializable {
         this.data = data;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     @Override
     public String toString() {
         return "DataResult{" +
                 "code='" + code + '\'' +
                 ", msg='" + msg + '\'' +
+                ", type='" + type + '\'' +
                 ", data=" + data +
                 '}';
     }

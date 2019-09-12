@@ -2,6 +2,7 @@ package com.hunter.blog.modules.article.dao;
 
 import com.github.pagehelper.Page;
 import com.hunter.blog.modules.article.model.ArticleDo;
+import com.hunter.blog.modules.article.model.ArticleDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -19,21 +20,20 @@ import java.util.List;
 @Mapper
 public interface IArticleDao {
 
+
+    /**
+     * 发布文章
+     * @param articleDto
+     * @return
+     */
+    Integer addArticle(@Param("articleDto") ArticleDto articleDto);
+
     /**
      * 根据子栏目查找文章
      * @param sortNavId
      * @return
      */
     Page<ArticleDo> getArticles(@Param("sortNavId") Integer sortNavId);
-
-    /**
-     * 发布文章
-     *
-     * @param articleDo
-     * @param userId
-     * @return
-     */
-    Integer addArticle(@Param("articleDo") ArticleDo articleDo, @Param("userId") int userId);
 
     /**
      * 搜索文章

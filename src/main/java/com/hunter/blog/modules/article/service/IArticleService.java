@@ -1,7 +1,10 @@
 package com.hunter.blog.modules.article.service;
 
 import com.github.pagehelper.Page;
+import com.hunter.blog.core.data.DataResult;
 import com.hunter.blog.modules.article.model.ArticleDo;
+import com.hunter.blog.modules.article.model.ArticleDto;
+import com.hunter.blog.modules.front.model.FrontDo;
 
 import java.util.List;
 import java.util.Map;
@@ -17,11 +20,16 @@ public interface IArticleService {
 
     /**
      * 发布文章
-     * @param articleDo
-     * @param userId
+     * @param articleDto
      * @return
      */
-    int addArticle(ArticleDo articleDo, int userId);
+    DataResult addArticle(ArticleDto articleDto);
+
+    /**
+     * 文章类型
+     * @return
+     */
+    DataResult getArticleLabel();
 
     /**
      * 搜索文章
@@ -53,4 +61,6 @@ public interface IArticleService {
      * @return
      */
     Integer updateArticle(ArticleDo articleDo);
+
+
 }

@@ -24,7 +24,7 @@ public interface IUserDao {
      * @param userDto
      * @return
      */
-    List<UserDto> findUserInfo(@Param("userDto") UserDto userDto);
+    UserDto findUserInfo(@Param("userDto") UserDto userDto);
 
     /**
      * 添加用户

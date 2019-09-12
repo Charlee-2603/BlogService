@@ -39,4 +39,11 @@ public interface ISysService {
      * @return
      */
     Integer getUserByName(UserDo userDo);
+
+    /**
+     * 用户登录状态
+     * @param map
+     * @return
+     */
+    DataResult userIsLogin(Map<String, Object> map);
 }

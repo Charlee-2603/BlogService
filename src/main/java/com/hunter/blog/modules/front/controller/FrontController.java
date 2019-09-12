@@ -36,9 +36,7 @@ public class FrontController {
     public String setHtml(@RequestParam(defaultValue = "1") Integer pageIndex,
                           @RequestParam(defaultValue = "10") Integer pageSize,
                           @RequestParam(defaultValue = "2") Integer frontId,
-                          @RequestParam(defaultValue = "13") Integer sortNavId,
-                          HttpServletRequest  request) {
-        System.out.println("bbbb,:" + request.getSession().getId());
+                          @RequestParam(defaultValue = "10") Integer sortNavId) {
         Map<String, Object> map = new HashMap<>(16);
         map.put("pageIndex", pageIndex);
         map.put("pageSize", pageSize);
