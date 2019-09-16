@@ -41,7 +41,7 @@ public class FrontServiceImpl implements IFrontService {
 
         // 分类导航栏列表
         Integer frontId = (Integer) map.get("frontId");
-        map.put("sortNavBarList", frontDao.getSortNavConfig("sortNavBar", frontId));
+        map.put("sortNavBarList", frontDao.getSortNavConfig("sortNavBar", "sortNavBar1", frontId));
 
         // 广告图片地址
         map.put("adInfo", frontDao.getFrontConfig("adInfo"));
@@ -51,8 +51,10 @@ public class FrontServiceImpl implements IFrontService {
         Integer pageSize = (Integer) map.get("pageSize");
         Integer sortNavId = (Integer) map.get("sortNavId");
         PageHelper.startPage(pageIndex, pageSize);
+        if (sortNavId == 10) {
+            sortNavId = null;
+        }
         Page<ArticleDo> articleList = articleDao.getArticles(sortNavId);
-        System.out.println(articleList);
         map.put("articleList", articleList);
         return map;
     }

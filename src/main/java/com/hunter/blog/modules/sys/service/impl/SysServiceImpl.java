@@ -61,9 +61,9 @@ public class SysServiceImpl implements ISysService {
                         if (userDto != null) {
                             map.remove("sessionId");
                             jedis.set(UUID, userDto.getUserId().toString());
-                            System.out.println("redis中tokenId = " + UUID);
-                            System.out.println("redis中tokenId的value = " + jedis.get(UUID));
+                            System.out.println(userDto.getUserAvatar());
                             mp.put("uid", userDto.getUserId());
+                            mp.put("avatar", userDto.getUserAvatar());
                             mp.put("tokenId", UUID);
                             map.put("token", mp);
                             data = new DataResult(CodeMsg.SUCCESS, map);

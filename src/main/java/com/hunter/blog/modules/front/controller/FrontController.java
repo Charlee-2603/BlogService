@@ -38,6 +38,8 @@ public class FrontController {
                           @RequestParam(defaultValue = "2") Integer frontId,
                           @RequestParam(defaultValue = "10") Integer sortNavId) {
         Map<String, Object> map = new HashMap<>(16);
+        System.out.println("pageIndex= " + pageIndex);
+        System.out.println("pageSize= " + pageSize);
         map.put("pageIndex", pageIndex);
         map.put("pageSize", pageSize);
         map.put("frontId", frontId);

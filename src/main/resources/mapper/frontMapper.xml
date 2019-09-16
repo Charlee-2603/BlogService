@@ -31,8 +31,11 @@
         from
         sys_front
         <where>
-            <if test="frontType != null and frontType != ''">
-                AND fro_type = #{frontType}
+            <if test="frontType1 != null and frontType1 != ''">
+                AND fro_type = #{frontType1}
+            </if>
+            <if test="frontType2 != null and frontType2 != ''">
+                OR fro_type = #{frontType2}
             </if>
             <if test="frontId != null and frontId != ''">
                 AND fat_id = #{frontId}

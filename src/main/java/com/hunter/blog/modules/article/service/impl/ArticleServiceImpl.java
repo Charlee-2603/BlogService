@@ -12,6 +12,7 @@ import com.hunter.blog.modules.front.model.FrontDo;
 import com.hunter.blog.utils.TimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -41,16 +42,20 @@ public class ArticleServiceImpl implements IArticleService {
      * @return
      */
     @Override
+    @Transactional(rollbackFor = {IllegalArgumentException.class})
     public DataResult addArticle(ArticleDto articleDto) {
-        DataResult<Object> data = null;
+        DataResult<Object> data;
         if (articleDto != null) {
             Integer userId = articleDto.getUserId();
             if (userId > 0) {
                 articleDto.setArticleCreateTime(TimeUtil.getSystemTime(new Date()));
-                int result = articleDao.addArticle(articleDto);
-                if (result == 1) {
-                    data = new DataResult<>(CodeMsg.SUCCESS);
-                    return data;
+                int result1 = articleDao.addArticle(articleDto);
+                int result2 = articleDao.addArtAndFroMiddle(articleDto);
+                if (result1 == 1) {
+                    if (result2 == 1) {
+                        data = new DataResult<>(CodeMsg.SUCCESS);
+                        return data;
+                    }
                 }
                 data = new DataResult<>(CodeMsg.ERROR);
                 return data;
@@ -100,7 +105,7 @@ public class ArticleServiceImpl implements IArticleService {
 
     @Override
     public DataResult getArticleLabel() {
-        DataResult data = null;
+        DataResult data;
         List<FrontDo> res = frontDao.getFrontConfig("sortNavBar");
         if (res.size() > 0) {
             data = new DataResult(CodeMsg.SUCCESS, res);

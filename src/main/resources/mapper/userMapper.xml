@@ -5,7 +5,8 @@
     <select id="findUserInfo" parameterType="com.hunter.blog.modules.user.model.UserDto"
             resultType="com.hunter.blog.modules.user.model.UserDto">
         SELECT
-        u_id AS userId
+        u_id AS userId,
+        u_avatar AS userAvatar
         FROM
         sys_user
         <where>

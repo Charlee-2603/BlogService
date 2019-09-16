@@ -16,11 +16,33 @@ public class ArticleDto extends ArticleDo implements Serializable {
      */
     private Integer userId;
 
+    /**
+     * 文章标签
+     */
+    private Integer frontId;
+
     public Integer getUserId() {
         return userId;
     }
 
     public void setUserId(Integer userId) {
         this.userId = userId;
+    }
+
+
+    public Integer getFrontId() {
+        return frontId;
+    }
+
+    public void setFrontId(Integer frontId) {
+        this.frontId = frontId;
+    }
+
+    @Override
+    public String toString() {
+        return "ArticleDto{" +
+                "userId=" + userId +
+                ", frontId=" + frontId +
+                "} " + super.toString();
     }
 }

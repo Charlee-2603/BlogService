@@ -5,6 +5,7 @@ import com.hunter.blog.core.data.DataResult;
 import com.hunter.blog.modules.article.model.ArticleDo;
 import com.hunter.blog.modules.article.model.ArticleDto;
 import com.hunter.blog.modules.front.model.FrontDo;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -20,6 +21,7 @@ public interface IArticleService {
 
     /**
      * 发布文章
+     *
      * @param articleDto
      * @return
      */
@@ -27,6 +29,7 @@ public interface IArticleService {
 
     /**
      * 文章类型
+     *
      * @return
      */
     DataResult getArticleLabel();
@@ -41,6 +44,7 @@ public interface IArticleService {
 
     /**
      * 根据ID删除文章
+     *
      * @param articleId
      * @return
      */
@@ -57,10 +61,9 @@ public interface IArticleService {
 
     /**
      * 修改文章
+     *
      * @param articleDo
      * @return
      */
     Integer updateArticle(ArticleDo articleDo);
-
-
 }

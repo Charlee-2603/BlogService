@@ -37,10 +37,18 @@
         </association>
     </resultMap>
 
-    <!--  添加文章  -->
-    <insert id="addArticle" parameterType="com.hunter.blog.modules.article.model.ArticleDto" >
+    <!--插入Article和Front的中间表-->
+    <insert id="addArtAndFroMiddle" parameterType="com.hunter.blog.modules.article.model.ArticleDto">
         INSERT INTO
-            sys_article(u_id, art_createTime, art_content, art_title, art_desc)
+            sys_art_front(id, art_id, fro_id)
+        VALUES(null,#{articleDto.articleId},#{articleDto.frontId})
+    </insert>
+
+
+    <!--  添加文章  -->
+    <insert id="addArticle" parameterType="com.hunter.blog.modules.article.model.ArticleDto"  keyProperty="articleDto.articleId" useGeneratedKeys="true" >
+        INSERT INTO
+            sys_article(u_id,art_createTime, art_content, art_title, art_desc)
         VALUES(#{articleDto.userId},#{articleDto.articleCreateTime},#{articleDto.articleContent},#{articleDto.articleTitle},#{articleDto.articleDesc})
     </insert>
 

@@ -27,10 +27,10 @@ public interface IFrontDao {
 
     /**
      * 根据父栏目Id找到子栏目
-     *
-     * @param frontKey
+     * @param frontKey1
+     * @param frontKey2
      * @param frontId
      * @return
      */
-    List<FrontDo> getSortNavConfig(@Param("frontType") String frontKey, @Param("frontId") Integer frontId);
+    List<FrontDo> getSortNavConfig(@Param("frontType1") String frontKey1,@Param("frontType2") String frontKey2, @Param("frontId") Integer frontId);
 }

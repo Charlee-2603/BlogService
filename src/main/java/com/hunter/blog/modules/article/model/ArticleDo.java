@@ -65,7 +65,7 @@ public class ArticleDo implements Serializable {
      */
     private UserDo userDo;
     /**
-     * 栏目对象
+     * 栏目对象(多对多)
      */
     private List<FrontDo> frontDos;
 

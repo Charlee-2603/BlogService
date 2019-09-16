@@ -19,14 +19,19 @@ import java.util.List;
 @Repository
 @Mapper
 public interface IArticleDao {
-
-
     /**
      * 发布文章
      * @param articleDto
      * @return
      */
-    Integer addArticle(@Param("articleDto") ArticleDto articleDto);
+    int addArticle(@Param("articleDto") ArticleDto articleDto);
+
+    /**
+     * 插入Article和Front的中间表
+     * @param articleDto
+     * @return
+     */
+    Integer addArtAndFroMiddle(@Param("articleDto") ArticleDto articleDto);
 
     /**
      * 根据子栏目查找文章
@@ -74,6 +79,5 @@ public interface IArticleDao {
      * @return
      */
     ArticleDo getArticleByArtcleId(@Param("articleId") Integer articleId);
-
 
 }
