@@ -48,4 +48,11 @@ public class FrontController {
         DataResult<Map> data = new DataResult<>(result);
         return JSON.toJSONString(data);
     }
+
+    @RequestMapping(value = "/myCenter", method = RequestMethod.POST)
+    public String setMyData() {
+        System.out.println("\u001B[36m" + "setMyData()方法执行了..." + "\u001B[36m");
+        DataResult res = frontService.getNavBar();
+        return JSON.toJSONString(res);
+    }
 }

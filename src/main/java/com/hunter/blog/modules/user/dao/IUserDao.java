@@ -6,7 +6,6 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 
 /**
  * 用户dao接口
@@ -55,4 +54,11 @@ public interface IUserDao {
      * @return
      */
     Integer getUserByName(@Param("userName") String userName);
+
+    /**
+     * 根据用户ID获取用户信息
+     * @param userId
+     * @return
+     */
+    UserDo getUserInfoByUserId(@Param("userId") Integer userId);
 }

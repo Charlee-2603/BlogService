@@ -20,6 +20,7 @@ public interface IFrontDao {
 
     /**
      * 根据前端key获取展示数据
+     *
      * @param frontType
      * @return
      */
@@ -27,10 +28,18 @@ public interface IFrontDao {
 
     /**
      * 根据父栏目Id找到子栏目
+     *
      * @param frontKey1
      * @param frontKey2
      * @param frontId
      * @return
      */
-    List<FrontDo> getSortNavConfig(@Param("frontType1") String frontKey1,@Param("frontType2") String frontKey2, @Param("frontId") Integer frontId);
+    List<FrontDo> getSortNavConfig(@Param("frontType1") String frontKey1, @Param("frontType2") String frontKey2, @Param("frontId") Integer frontId);
+
+    /**
+     * 获取个人中心导航栏
+     * @param personalNav
+     * @return
+     */
+    List<FrontDo> getNavBar(@Param("personalNav") String personalNav);
 }

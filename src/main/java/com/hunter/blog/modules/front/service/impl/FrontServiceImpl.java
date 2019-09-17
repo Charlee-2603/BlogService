@@ -2,9 +2,12 @@ package com.hunter.blog.modules.front.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.hunter.blog.core.data.CodeMsg;
+import com.hunter.blog.core.data.DataResult;
 import com.hunter.blog.modules.article.dao.IArticleDao;
 import com.hunter.blog.modules.article.model.ArticleDo;
 import com.hunter.blog.modules.front.dao.IFrontDao;
+import com.hunter.blog.modules.front.model.FrontDo;
 import com.hunter.blog.modules.front.service.IFrontService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -57,5 +60,22 @@ public class FrontServiceImpl implements IFrontService {
         Page<ArticleDo> articleList = articleDao.getArticles(sortNavId);
         map.put("articleList", articleList);
         return map;
+    }
+
+    /**
+     * 获取个人中心导航栏
+     *
+     * @return
+     */
+    @Override
+    public DataResult getNavBar() {
+        DataResult data;
+        List<FrontDo> personalNavList = frontDao.getNavBar("personalNav");
+        if (!personalNavList.isEmpty()) {
+            data = new DataResult(CodeMsg.SUCCESS, personalNavList);
+            return data;
+        }
+        data = new DataResult(CodeMsg.ERROR);
+        return data;
     }
 }

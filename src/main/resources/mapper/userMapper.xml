@@ -1,6 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hunter.blog.modules.user.dao.IUserDao">
+    <!--  根据用户ID获取用户信息  -->
+    <select id="getUserInfoByUserId" parameterType="Integer" resultType="com.hunter.blog.modules.user.model.UserDo">
+        select
+        u_nickname AS userNickname,
+        u_actualName AS userActualName,
+        u_avatar AS userAvatar,
+        u_birthday AS userBirthday,
+        u_city AS userCity,
+        u_signature AS userSignatrue,
+        u_industry AS userIndustry,
+        u_sex AS userSex
+        from
+        sys_user
+        <where>
+            <if test="userId != null and userId != ''">
+                AND u_id = #{userId}
+            </if>
+            AND u_status = 1
+        </where>
+    </select>
+
     <!--  根据账号密码判断用户是否存在  -->
     <select id="findUserInfo" parameterType="com.hunter.blog.modules.user.model.UserDto"
             resultType="com.hunter.blog.modules.user.model.UserDto">

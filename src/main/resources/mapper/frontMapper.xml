@@ -43,4 +43,22 @@
         </where>
         AND is_deleted = 1
     </select>
+
+
+    <!--  获取个人中心导航栏  -->
+    <select id="getNavBar" parameterType="String" resultType="com.hunter.blog.modules.front.model.FrontDo">
+        SELECT
+            fro_id AS frontId,
+            fro_type AS frontType,
+            fro_key AS frontKey,
+            fro_name AS frontName
+        FROM
+            sys_front
+        <where>
+            <if test="personalNav != null and personalNav != ''">
+                AND fro_type = #{personalNav}
+            </if>
+            AND is_deleted = 1
+        </where>
+    </select>
 </mapper>
