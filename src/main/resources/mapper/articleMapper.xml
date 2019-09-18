@@ -44,9 +44,9 @@
         VALUES(null,#{articleDto.articleId},#{articleDto.frontId})
     </insert>
 
-
     <!--  添加文章  -->
-    <insert id="addArticle" parameterType="com.hunter.blog.modules.article.model.ArticleDto"  keyProperty="articleDto.articleId" useGeneratedKeys="true" >
+    <insert id="addArticle" parameterType="com.hunter.blog.modules.article.model.ArticleDto"
+            keyProperty="articleDto.articleId" useGeneratedKeys="true">
         INSERT INTO
             sys_article(u_id,art_createTime, art_content, art_title, art_desc)
         VALUES(#{articleDto.userId},#{articleDto.articleCreateTime},#{articleDto.articleContent},#{articleDto.articleTitle},#{articleDto.articleDesc})
@@ -117,5 +117,25 @@
         </where>
         ORDER BY
         a.art_readnum desc
+    </select>
+
+    <!--  根据用户ID获取该用户相关的文章  -->
+    <select id="getArticleByUserId" parameterType="Integer"
+            resultType="com.hunter.blog.modules.article.model.ArticleDo">
+        select
+        art_id AS articleId,
+        art_title AS articleTitle,
+        art_readnum AS articleReadnum,
+        art_createTime AS articleCreateTime,
+        art_comment AS articleComment
+        from
+        sys_article
+        <where>
+            <if test="userId != null and userId != ''">
+                AND u_id = #{userId}
+            </if>
+            AND is_deleted = 1
+        </where>
+        ORDER BY art_createTime desc
     </select>
 </mapper>

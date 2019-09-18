@@ -9,9 +9,10 @@
         u_avatar AS userAvatar,
         u_birthday AS userBirthday,
         u_city AS userCity,
-        u_signature AS userSignatrue,
+        u_signature AS userSignature,
         u_industry AS userIndustry,
-        u_sex AS userSex
+        u_sex AS userSex,
+        u_position AS userPosition
         from
         sys_user
         <where>

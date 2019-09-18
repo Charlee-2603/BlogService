@@ -80,4 +80,10 @@ public interface IArticleDao {
      */
     ArticleDo getArticleByArtcleId(@Param("articleId") Integer articleId);
 
+    /**
+     * 根据用户ID获取该用户相关的文章
+     * @param userId
+     * @return
+     */
+    Page<ArticleDo> getArticleByUserId(@Param("userId") Integer userId);
 }

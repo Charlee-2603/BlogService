@@ -59,6 +59,11 @@ public class UserDo implements Serializable {
     private String userIndustry;
 
     /**
+     * 职位
+     */
+    private String userPosition;
+
+    /**
      * 用户所在城市
      */
     private String userCity;
@@ -102,6 +107,7 @@ public class UserDo implements Serializable {
      * 用户积分
      */
     private Integer userIntegral;
+
 
     /**
      * 用户注册时间
@@ -286,6 +292,14 @@ public class UserDo implements Serializable {
         this.userStatusDesc = userStatusDesc;
     }
 
+    public String getUserPosition() {
+        return userPosition;
+    }
+
+    public void setUserPosition(String userPosition) {
+        this.userPosition = userPosition;
+    }
+
     @Override
     public String toString() {
         return "UserDo{" +
@@ -298,6 +312,7 @@ public class UserDo implements Serializable {
                 ", userNickname='" + userNickname + '\'' +
                 ", userActualName='" + userActualName + '\'' +
                 ", userIndustry='" + userIndustry + '\'' +
+                ", userPosition='" + userPosition + '\'' +
                 ", userCity='" + userCity + '\'' +
                 ", userBirthday='" + userBirthday + '\'' +
                 ", userAge=" + userAge +

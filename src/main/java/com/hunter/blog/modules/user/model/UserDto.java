@@ -1,5 +1,6 @@
 package com.hunter.blog.modules.user.model;
 
+import com.hunter.blog.config.page.model.PageDo;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
@@ -22,6 +23,8 @@ public class UserDto extends UserDo implements Serializable {
      */
     private String sessionId;
 
+    private PageDo pageDo;
+
     public String getSessionId() {
         return sessionId;
     }
@@ -38,11 +41,20 @@ public class UserDto extends UserDo implements Serializable {
         this.code = code;
     }
 
+    public PageDo getPageDo() {
+        return pageDo;
+    }
+
+    public void setPageDo(PageDo pageDo) {
+        this.pageDo = pageDo;
+    }
+
     @Override
     public String toString() {
         return "UserDto{" +
                 "code='" + code + '\'' +
                 ", sessionId='" + sessionId + '\'' +
+                ", pageDo=" + pageDo +
                 "} " + super.toString();
     }
 }
