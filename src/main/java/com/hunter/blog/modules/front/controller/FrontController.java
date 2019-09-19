@@ -4,10 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.hunter.blog.core.data.DataResult;
 import com.hunter.blog.modules.front.service.IFrontService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,7 +16,7 @@ import java.util.Map;
  * @version 1.0.0
  * @data: 2019/8/29 14:43
  */
-@RequestMapping("/sys/front")
+@RequestMapping("/view")
 @RestController
 @CrossOrigin
 public class FrontController {

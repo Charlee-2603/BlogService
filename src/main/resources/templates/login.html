@@ -1,0 +1,50 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>登录注册-猎刃博客</title>
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap/bootstrap.min.css" th:href="@{/css/bootstrap/bootstrap.min.css}">
+    <link rel="stylesheet" type="text/css" href="/css/page/login/normalize.css" th:href="@{/css/page/login/normalize.css}"/>
+    <link rel="stylesheet" type="text/css" href="/css/page/login/default.css" th:href="@{/css/page/login/default.css}"/>
+    <link rel="stylesheet" type="text/css" href="/css/page/login/styles.css" th:href="@{/css/page/login/styles.css}"/>
+    <script type="text/javascript" th:src="@{/js/jquery/jquery-3.3.1.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/bootstrap/bootstrap.min.js}"></script>
+    <script type="text/javascript" th:src="@{/js/api/api.js}"></script>
+    <script type="text/javascript" th:src="@{/js/api/ajax.js}"></script>
+    <script type="text/javascript" th:src="@{/js/page/login.js}"></script>
+
+</head>
+<body>
+<div class="htmleaf-container">
+    <div class="wrapper" style="display: flex">
+        <div id="accountLogin" class="container">
+            <h1 id="accountTitle">帐号登录</h1>
+            <form action="javascript:void(0)" class="form">
+                <input type="hidden" id="sessionId">
+                <input type="text" id="username" placeholder="用户名" required>
+                <input type="password" id="password" placeholder="密码" required>
+                <div style="display: flex">
+                    <input id="code" name="code" type="text" placeholder="验证码" maxlength="4" required
+                           style="width: 50%;position: relative;">
+                    <img id="captchaImg" alt="点击更换" title="点击更换" onclick="refresh()"
+                         style="position:absolute;border:none;right:125px;border-radius:2px;margin-left: 10px;width: 100px;height: 45px">
+                </div>
+                <button type="submit" id="login-button" onclick="loginChange(this)">登录</button>
+            </form>
+        </div>
+        <ul class="bg-bubbles">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+    </div>
+</div>
+</body>
+</html>

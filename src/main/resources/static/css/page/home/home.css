@@ -1,0 +1,295 @@
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    display: block;
+    width: 100%;
+    min-width: 1200px;
+    height: 100%;
+}
+
+
+/**
+ 布局
+ */
+.display {
+    display: flex;
+}
+
+/**
+  选中样式
+ */
+.active {
+    color: red;
+}
+
+.sortActive {
+    color: white;
+    background-color: red;
+    padding: 10px 0;
+}
+
+/*
+  顶部导航栏模块
+ */
+.bg-toolbar {
+    width: 100%;
+    padding: 0 23%;
+}
+
+/**
+   顶部导航栏内部
+ */
+.bg-toolbar-container {
+    min-width: 1200px;
+}
+
+ul {
+    list-style: none;
+    text-align: center;
+}
+
+/*
+  顶部导航栏li
+ */
+#bg-toolbar > div > div > ul > li {
+    margin: 0 10px;
+    font-size: 1.1em;
+    padding: 10px 0;
+    list-style-type: none;
+}
+
+#bg-toolbar > div > div > ul > li:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    border-bottom: 2px solid red;
+}
+
+#bg-toolbar > div > div > ul > li:hover:before {
+    width: 100%;
+}
+
+/**
+ 顶部导航栏按钮li
+ */
+#bg-nav-btn > li:hover {
+    color: red;
+}
+
+
+/**
+ 分类导航栏li
+ */
+#id-sortNav-model > li {
+    list-style-type: none;
+    width: 100%;
+    padding: 10px 0;
+    margin: 2px 0;
+}
+
+/**
+ 分类导航栏li
+ */
+#id-sortNav-model > li:hover {
+    list-style-type: none;
+    width: 100%;
+    padding: 10px 0;
+    margin: 2px 0;
+    background-color: red;
+    color: white;
+}
+
+/*
+  顶部导航栏搜索栏
+ */
+.bg-search {
+    display: block;
+    height: 30px;
+    margin: 6px 20px 0;
+    padding: 0 10px 3px 10px;
+    border: 1px solid #CCC;
+    border-radius: 4px;
+    color: #bbb;
+}
+
+/**
+   中间模块
+ */
+.body-model {
+    display: flex;
+    position: relative;
+    padding: 0 23%;
+    background: #f5f6f7;
+    width: 100%;
+    min-height: 100%;
+}
+
+/**
+  分类导航栏模块
+ */
+.bg-sort-model {
+    display: block;
+    position: absolute;
+    top: 10px;
+    width: 100px;
+    background-color: white;
+}
+
+/**
+  文章模块
+ */
+.article-model {
+    margin: 11px 0 20px 110px;
+    width: 750px;
+}
+
+/**
+  广告模块
+ */
+.bg-content-model-ad {
+    width: 100%;
+    height: 150px;
+    margin-bottom: 5px;
+}
+
+/**
+  广告图片
+ */
+.bg-content-model-ad-img {
+    width: 100%;
+    height: 100%;
+    margin-bottom: 10px;
+}
+
+/**
+  文章外模块
+ */
+.bg-content-model-article {
+    border: 1px solid #eee;
+}
+
+/*
+  文章内模块
+ */
+.model-article {
+    width: 750px;
+    height: 130px;
+    background-color: white;
+    padding: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+/*
+ 文章标题
+ */
+.article-title {
+    color: #3d3d3d;
+    font-size: 20px;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.article-title:hover {
+    color: red;
+    font-size: 20px;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+/**
+  文章简介
+ */
+.article-introduction {
+    margin: 5px 0;
+}
+
+
+/*
+ 文章图片模块
+ */
+.article-title-img-model {
+    height: 30px;
+    line-height: 30px;
+}
+
+/*
+ 文章图片
+ */
+.article-title-img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 1px solid #ccc;
+}
+
+/*
+  文章作者
+ */
+.article-title-user {
+    margin: auto 5px;
+    vertical-align: middle;
+}
+
+/*
+ 分割线
+ */
+.interval {
+    width: 1px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #e0e0e0;
+    margin: 10px;
+}
+
+/*
+  时间
+ */
+.article-time {
+    line-height: 34px;
+    color: #aaa;
+}
+
+/*
+  阅读数
+ */
+.article-readCount {
+    text-decoration: none;
+    line-height: 34px;
+    color: #aaa;
+}
+
+/*
+  文章信息
+ */
+.article-message {
+    display: flex;
+    justify-content: space-between;
+    line-height: 34px;
+}
+
+.myCenterNav > li {
+    margin: 3px 0;
+    padding: 10px 0;
+    width: 150px;
+}
+
+.myCenterNav > li:hover {
+    padding: 10px;
+    width: 150px;
+    color: white;
+    background-color: red;
+}
+
+.my-active {
+    color: white;
+    background-color: red;
+}
+
+

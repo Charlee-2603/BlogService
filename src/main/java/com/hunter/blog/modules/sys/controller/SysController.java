@@ -9,7 +9,9 @@ import com.hunter.blog.modules.sys.service.ISysService;
 import com.hunter.blog.modules.user.model.UserDo;
 import com.hunter.blog.modules.user.model.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import redis.clients.jedis.Jedis;
 import sun.misc.BASE64Encoder;
 
@@ -31,6 +33,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/sys")
+@CrossOrigin
 public class SysController {
 
     @Autowired
@@ -38,39 +41,6 @@ public class SysController {
 
     @Autowired
     private Producer captchaProducer = null;
-
-    /**
-     * 用户是否处于登录状态
-     * @param token
-     * @param request
-     * @return
-     */
-    @RequestMapping(value = "/uType", method = RequestMethod.POST)
-    public String userIsLogin(@RequestBody String token, HttpServletRequest request) {
-        HashMap<String, Object> map = new HashMap<>(16);
-        JSONObject obj = JSONObject.parseObject(token);
-        map.put("sessionId", request.getSession().getId());
-        map.put("uid", obj.getString("uid"));
-        map.put("tokenId", obj.getString("tokenId"));
-        DataResult res = sysService.userIsLogin(map);
-        return JSON.toJSONString(res);
-    }
-
-    /**
-     * 用户登录
-     *
-     * @param user
-     * @return
-     */
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public String userLogin(UserDto user, HttpServletRequest request) {
-        System.out.println("\u001B[36m" + "*******访问了用户登录接口*******" + "\u001B[36m");
-        Map<String, Object> map = new HashMap<>(16);
-        String sessionId = request.getSession().getId();
-        map.put("sessionId", sessionId);
-        DataResult<UserDo> res = sysService.login(user, map);
-        return JSON.toJSONString(res);
-    }
 
     /**
      * 获取验证码
@@ -81,7 +51,7 @@ public class SysController {
      * @throws IOException
      */
     @RequestMapping(value = "/code", method = RequestMethod.POST)
-    public String getCodeImage(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public String getCodeImage(Model model, HttpServletRequest request, HttpServletResponse response) throws IOException {
         Map<String, Object> map = new HashMap<>(16);
         String sessionId = request.getSession().getId();
 
@@ -112,8 +82,45 @@ public class SysController {
             outputStream.close();
         }
         map.put("codeImg", base64Img);
-        return JSON.toJSONString(map);
+        model.addAttribute("code", JSON.toJSONString(map));
+        return "login";
     }
+
+
+    /**
+     * 用户登录
+     *
+     * @param user
+     * @return
+     */
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public String userLogin(UserDto user, HttpServletRequest request) {
+        System.out.println("\u001B[36m" + "*******访问了用户登录接口*******" + "\u001B[36m");
+        Map<String, Object> map = new HashMap<>(16);
+        String sessionId = request.getSession().getId();
+        map.put("sessionId", sessionId);
+        DataResult<UserDo> res = sysService.login(user, map);
+        return JSON.toJSONString(res);
+    }
+
+    /**
+     * 用户是否处于登录状态
+     *
+     * @param token
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/uType", method = RequestMethod.POST)
+    public String userIsLogin(@RequestBody String token, HttpServletRequest request) {
+        HashMap<String, Object> map = new HashMap<>(16);
+        JSONObject obj = JSONObject.parseObject(token);
+        map.put("sessionId", request.getSession().getId());
+        map.put("uid", obj.getString("uid"));
+        map.put("tokenId", obj.getString("tokenId"));
+        DataResult res = sysService.userIsLogin(map);
+        return JSON.toJSONString(res);
+    }
+
 
     /**
      * 用户注册
