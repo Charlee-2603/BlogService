@@ -16,7 +16,7 @@ import java.util.Map;
  * @version 1.0.0
  * @data: 2019/8/29 14:43
  */
-@RequestMapping("/view")
+@RequestMapping("/api/front")
 @RestController
 @CrossOrigin
 public class FrontController {
@@ -45,6 +45,7 @@ public class FrontController {
         DataResult<Map> data = new DataResult<>(result);
         return JSON.toJSONString(data);
     }
+
 
     @RequestMapping(value = "/myCenter", method = RequestMethod.POST)
     public String setMyData() {

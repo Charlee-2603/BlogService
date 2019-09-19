@@ -1,5 +1,6 @@
 package com.hunter.blog.modules.view.controller;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
@@ -11,7 +12,8 @@ import org.springframework.web.servlet.ModelAndView;
  * @version 1.0.0
  */
 @RestController
-@RequestMapping("/view")
+@RequestMapping("/api/view")
+@CrossOrigin
 public class ViewController {
 
     /**
@@ -19,9 +21,20 @@ public class ViewController {
      * @param modelAndView
      * @return
      */
-    @RequestMapping("/login")
+    @RequestMapping(value = "/login")
     public ModelAndView toLoginView(ModelAndView modelAndView) {
         modelAndView.setViewName("login");
+        return modelAndView;
+    }
+
+    /**
+     * 跳转到首页页面
+     * @param modelAndView
+     * @return
+     */
+    @RequestMapping(value = "/home")
+    public ModelAndView toHomeView(ModelAndView modelAndView) {
+        modelAndView.setViewName("home");
         return modelAndView;
     }
 

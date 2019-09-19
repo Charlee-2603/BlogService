@@ -9,9 +9,7 @@ import com.hunter.blog.modules.sys.service.ISysService;
 import com.hunter.blog.modules.user.model.UserDo;
 import com.hunter.blog.modules.user.model.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 import redis.clients.jedis.Jedis;
 import sun.misc.BASE64Encoder;
 
@@ -32,7 +30,7 @@ import java.util.Map;
  * @data: 2019/9/3 19:14
  */
 @RestController
-@RequestMapping("/sys")
+@RequestMapping("/api/sys")
 @CrossOrigin
 public class SysController {
 
@@ -51,41 +49,34 @@ public class SysController {
      * @throws IOException
      */
     @RequestMapping(value = "/code", method = RequestMethod.POST)
-    public String getCodeImage(Model model, HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public String getCodeImage(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Map<String, Object> map = new HashMap<>(16);
         String sessionId = request.getSession().getId();
-
         response.setDateHeader("Expires", 0);
         response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
         response.addHeader("Cache-Control", "post-check=0, pre-check=0");
         response.setHeader("Pragma", "no-cache");
         response.setContentType("image/jpeg");
-
-        //生成验证码
+        // 生成验证码
         String capText = captchaProducer.createText();
         System.out.println("验证码:" + capText);
-
         // 把sessionId和验证码已key-value的形式存储在redis中
         Jedis jedis = new Jedis();
         jedis.set(sessionId, capText);
-
-        //向客户端写出
+        // 向客户端写出
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         BufferedImage bi = captchaProducer.createImage(capText);
         ImageIO.write(bi, "jpg", outputStream);
         BASE64Encoder encoder = new BASE64Encoder();
         String base64Img = encoder.encode(outputStream.toByteArray());
-
         try {
             outputStream.flush();
         } finally {
             outputStream.close();
         }
         map.put("codeImg", base64Img);
-        model.addAttribute("code", JSON.toJSONString(map));
-        return "login";
+        return JSON.toJSONString(map);
     }
-
 
     /**
      * 用户登录
@@ -94,7 +85,7 @@ public class SysController {
      * @return
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public String userLogin(UserDto user, HttpServletRequest request) {
+    public String userLogin(@RequestBody UserDto user, HttpServletRequest request) {
         System.out.println("\u001B[36m" + "*******访问了用户登录接口*******" + "\u001B[36m");
         Map<String, Object> map = new HashMap<>(16);
         String sessionId = request.getSession().getId();
@@ -120,8 +111,7 @@ public class SysController {
         DataResult res = sysService.userIsLogin(map);
         return JSON.toJSONString(res);
     }
-
-
+    
     /**
      * 用户注册
      *

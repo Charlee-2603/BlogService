@@ -1,50 +1,50 @@
 // logo图片地址
-let logoImgUrl;
+var logoImgUrl;
 
 // 顶部导航栏列表
-let navBarList;
+var navBarList;
 
 // 顶部导航栏ID
-let navBarId;
+var navBarId ;
 
 //顶部导航栏按钮
-let navBarListBtn;
+var navBarListBtn;
 
 // 分类导航栏列表
 var sortNavBarList;
 
 // 选中的导航栏列表下标
-let selectedNavIndex = 0;
+var selectedNavIndex = 0;
 
 // 分类栏目id
-let sortNavId = 10;
+var sortNavId = 10;
 
 // 选中的导航栏按钮下标
-let selectedNavBtnIndex = 0;
+var selectedNavBtnIndex = 0;
 
 // 广告
-let adInfo;
+var adInfo;
 
 // 文章列表
-let articleList;
+var articleList;
 
 // 文章页码
-let pageIndex = 1;
+var pageIndex = 1;
 
 // 文章显示条数
-let pageSize = 10;
+var pageSize = 10;
 
 // 选中的导航栏下标
-let selectedSortNavIndex = 0;
+var selectedSortNavIndex = 0;
 
 // 个人中心导航栏下标
-let mineNavIndex = 0;
+var mineNavIndex = 0;
 
 // 个人中心 》 我的博客页码
-let myBlogPageIndex = 1;
+var myBlogPageIndex = 1;
 
 // 个人中心 》 我的博客页数大小
-let myBlogPageSize = 10;
+var myBlogPageSize = 10;
 
 $(function () {
     // 获取前端默认展示数据
@@ -53,137 +53,51 @@ $(function () {
     // 设置头部内容
     setHead();
 
-    // 用户是否登录
-    userIsLogin();
-
     // 设置中间内容
     setBody();
 
     mySroll();
 
+    // 用户是否登录
+    // userIsLogin();
+
 });
 
-function mySroll() {
-    var height = 50;
+/**
+ * 前端默认展示页面
+ */
+function setHtml() {
+    var data = {
+        pageIndex: pageIndex,
+        pageSize: pageSize,
+        frontId: navBarId,
+        sortNavId: sortNavId
+    };
+    http(frontUrl, "POST", false, data, "JSON", function (res) {
+        console.log(res);
+        // 设置logo
+        logoImgUrl = res.data.logoImgUrl[0].frontValue;
 
-    $(window).scroll(function () {
-        console.log(1);
-        let scrollTop = $(window).scrollTop();
-        // console.log("距离顶部:", scrollTop);
-        let scrollHeight = $(document).height();
-        // console.log("滚动条高度:", scrollHeight);
-        let windowHeight = $(this).height();
-        // console.log("窗口高度:", windowHeight);
-        let positionValue = (scrollTop + windowHeight) - scrollHeight;
-        // console.log("当前位置:", positionValue);
+        // 设置顶部导航栏
+        navBarList = res.data.navBarList;
 
-        if (positionValue == 0) {
-            // 下拉刷新
-            pageIndex++;
-            myBlogPageIndex ++;
-            setHtml();
-            setArticle();
-            getBlogByUserId();
-        }
+        // 设置顶部导航栏按钮
+        navBarListBtn = res.data.navBarListBtn;
 
-        if (scrollTop > height) {
-            $(".bg-sort-model").css({
-                'position': 'fixed',
-                'top': '0px',
-            });
-        } else {
-            $(".bg-sort-model").css({
-                'position': 'absolute',
-                'top': '10px',
-            });
-        }
+        // 设置分类导航栏
+        sortNavBarList = res.data.sortNavBarList;
+        // console.log("分类导航栏：", sortNavBarList);
+
+        // 设置广告地址
+        adInfo = res.data.adInfo;
+
+        // 文章列表
+        articleList = res.data.articleList;
+        // console.log("文章列表", articleList);
+    }, function () {
+        alert("获取数据失败！");
     });
 }
-
-/**
- * 判断用户是否登录
- */
-function userIsLogin() {
-    let uid = window.localStorage.getItem("uid");
-    let tokenId = window.localStorage.getItem("tokenId");
-    let url = uType;
-    let data = {
-        uid: uid,
-        tokenId: tokenId
-    };
-    http(url, "post", true, data, "json", function (res) {
-        console.log("用户登录状态：", JSON.stringify(res));
-        if (res.type == "success") {
-            console.log("用户处于登录状态");
-
-            $("#avatar-btn").bind("click", function () {
-                //首页内容模块隐藏
-
-                $("#body-model").hide();
-                $("#mime-model").show();
-                // ajax请求
-                http(myCenterNav, "post", true, "", "json", function (res) {
-                    console.log(res);
-                    let personalNavList = res.data;
-                    if (res.type == "success") {
-                        getUserInfo();
-                        $("#myCenterNav").empty();
-                        $.each(personalNavList, function (i, val) {
-                            let $li = $("<li id='my-li'></li>");
-                            $("#myCenterNav").append($li);
-                            $li.attr("id", "my-li" + i);
-                            if (i == mineNavIndex) {
-                                $li.attr("class", "my-active");
-                            }
-                            $li.text(personalNavList[i].frontName);
-                            $li.on('click', function () {
-                                $("#my-li" + mineNavIndex).attr("class", "");
-                                $li.attr("class", "my-active");
-                                mineNavIndex = i;
-                                switch (i) {
-                                    case 0:
-                                        getUserInfo();
-                                        $("#myData").show();
-                                        $("#myBlog").hide();
-                                        $("#myShare").hide();
-                                        break;
-                                    case 1:
-                                        getBlogByUserId();
-                                        $("#myData").hide();
-                                        $("#myBlog").show();
-                                        $("#myShare").hide();
-                                        break;
-                                    case 2:
-                                        $("#myData").hide();
-                                        $("#myBlog").hide();
-                                        $("#myShare").show();
-                                        break;
-                                }
-                            });
-
-                        });
-                    }
-                }, function () {
-                    alert("error");
-                })
-            });
-
-            let avatar = window.localStorage.getItem("avatar");
-            console.log("头像地址 = " + avatar);
-            if (avatar != null || avatar != undefined) {
-                $("#avatar-img").attr("src", avatar);
-            } else {
-                alert("头像获取失败");
-            }
-        } else {
-            console.log("未登录");
-            $("#avatar-btn").attr("href", "./login.html");
-        }
-    }, function (res) {
-        alert("error");
-    })
-}
-
 
 /**
  * 设置头部内容
@@ -191,69 +105,11 @@ function userIsLogin() {
 function setHead() {
     // 设置logo
     setLogo();
-
     // 设置顶部导航栏列表
     setNavBar();
-
     // 设置顶部导航栏按钮
     setNavBarBtn();
 }
-
-/**
- * 设置中间内容
- */
-function setBody() {
-    //设置分类导航栏列表
-    setSortNav();
-
-    // 设置广告栏
-    setAd();
-
-    //设置文章
-    setArticle();
-}
-
-
-/**
- * 前端默认展示页面
- */
-function setHtml() {
-    $.ajax({
-        type: 'POST',
-        url: frontUrl,
-        async: false,
-        data: {
-            pageIndex: pageIndex,
-            pageSize: pageSize,
-            frontId: navBarId,
-            sortNavId: sortNavId
-        },
-        success: function (e) {
-            let res = JSON.parse(e);
-            console.log(res);
-            // 设置logo
-            logoImgUrl = res.data.logoImgUrl[0].frontValue;
-
-            // 设置顶部导航栏
-            navBarList = res.data.navBarList;
-
-            // 设置顶部导航栏按钮
-            navBarListBtn = res.data.navBarListBtn;
-
-            // 设置分类导航栏
-            sortNavBarList = res.data.sortNavBarList;
-            // console.log("分类导航栏：", sortNavBarList);
-
-            // 设置广告地址
-            adInfo = res.data.adInfo;
-
-            // 文章列表
-            articleList = res.data.articleList;
-            // console.log("文章列表", articleList);
-        }
-    })
-}
-
 
 /**
  * 设置logo
@@ -268,13 +124,13 @@ function setLogo() {
  * 设置顶部导航栏列表
  */
 function setNavBar() {
-    for (let i = 0; i < navBarList.length; i++) {
-        let $li = $("<li id='id-nav-li'></li>");
+    for (var i = 0; i < navBarList.length; i++) {
+        var $li = $("<li id='id-nav-li'></li>");
         $("#bg-nav-ul").append($li);
         $li.attr("id", "id-nav-li" + i);
 
         // 判断是否已登录，登陆了隐藏登录注册按钮
-        let user = window.localStorage.getItem("user");
+        var user = window.localStorage.getItem("user");
         if (user == null) {
             // 未登录  显示登录注册按钮
             if (i == selectedNavIndex) {
@@ -301,13 +157,12 @@ function setNavBar() {
     }
 }
 
-
 /**
  * 设置顶部导航栏按钮
  */
 function setNavBarBtn() {
-    for (let i = 0; i < navBarListBtn.length; i++) {
-        let $li = $("<li id='id-nav-btn'></li>");
+    for (var i = 0; i < navBarListBtn.length; i++) {
+        var $li = $("<li id='id-nav-btn'></li>");
         $("#bg-nav-btn").append($li);
         $li.attr("id", "id-nav-btn" + i);
 
@@ -321,17 +176,29 @@ function setNavBarBtn() {
 }
 
 /**
+ * 设置中间内容
+ */
+function setBody() {
+    //设置分类导航栏列表
+    setSortNav();
+    // 设置广告栏
+    setAd();
+    //设置文章
+    setArticle();
+}
+
+/**
  * 设置分类导航栏
  */
 function setSortNav() {
     console.log(sortNavBarList);
     $.each(sortNavBarList, function (i, val) {
         // 导航栏名称
-        let name = sortNavBarList[i].frontName;
+        var name = sortNavBarList[i].frontName;
         // 导航栏Id
-        let Id = sortNavBarList[i].frontId;
+        var Id = sortNavBarList[i].frontId;
 
-        let $li = $("<li id='id-sortNav-li'></li>");
+        var $li = $("<li id='id-sortNav-li'></li>");
         $("#id-sortNav-model").append($li);
         $li.attr("id", "id-sortNav-li" + i);
 
@@ -358,14 +225,6 @@ function setSortNav() {
             setArticle();
         })
     });
-
-}
-
-/**
- * 顶部导航栏跳转
- */
-function clickLogo() {
-    window.location = "/home.html";
 }
 
 
@@ -374,16 +233,8 @@ function clickLogo() {
  */
 
 function setAd() {
-    let imgSrc = adInfo[0].frontValue;
+    var imgSrc = adInfo[0].frontValue;
     $("#ad-img").attr("src", imgSrc);
-}
-
-/**
- * 设置广告图片跳转
- */
-function adToUrl() {
-    let url = adInfo[1].frontValue;
-    window.location = url;
 }
 
 /**
@@ -392,7 +243,7 @@ function adToUrl() {
 function setArticle() {
     console.log("articleList", articleList);
     $.each(articleList, function (i, val) {
-        let $div = $("<div class='bg-content-model-article'>" +
+        var $div = $("<div class='bg-content-model-article'>" +
             "<div class='model-article'>" +
             "<input type='hidden' id='article-artId'>" +
             "<a class='article-title' id='article-title'><!--文章标题--></a>" +
@@ -400,7 +251,7 @@ function setArticle() {
             "<div class='article-message'>" +
             "<div style='display:flex'>" +
             "<div class='article-title-img-model'>" +
-            "<img src='../images/logo/logo.jpg' class='article-title-img'>" +
+            "<img src='/image/avatar/man.jpg' class='article-title-img'>" +
             "<span class='article-title-user'>中国卫视</span>" +
             "</div>" +
             "<div class='interval'></div>" +
@@ -441,11 +292,11 @@ function setArticle() {
         $("#article-title" + articleList[i].articleId).attr("href", "");
 
         // 设置文章简介
-        let articleDesc = subString(articleList[i].articleDesc, "desc");
+        var articleDesc = subString(articleList[i].articleDesc, "desc");
         $("#article-desc" + articleList[i].articleId).text(articleDesc);
 
         // 设置文章创建时间
-        let articleCreateTime = subString(articleList[i].articleCreateTime, "time");
+        var articleCreateTime = subString(articleList[i].articleCreateTime, "time");
         $("#article-time" + articleList[i].articleId).text(articleCreateTime);
 
         // 设置文章阅读数量
@@ -458,11 +309,127 @@ function setArticle() {
 }
 
 /**
+ * 判断用户是否登录
+ */
+function userIsLogin() {
+    var uid = window.localStorage.getItem("uid");
+    var tokenId = window.localStorage.getItem("tokenId");
+    var url = uType;
+    var data = {
+        uid: uid,
+        tokenId: tokenId
+    };
+    http(url, "post", true, data, "json", function (res) {
+        console.log("用户登录状态：", JSON.stringify(res));
+        if (res.type == "success") {
+            console.log("用户处于登录状态");
+
+            $("#avatar-btn").bind("click", function () {
+                //首页内容模块隐藏
+
+                $("#body-model").hide();
+                $("#mime-model").show();
+                // ajax请求
+                http(myCenterNav, "post", true, "", "json", function (res) {
+                    console.log(res);
+                    var personalNavList = res.data;
+                    if (res.type == "success") {
+                        getUserInfo();
+                        $("#myCenterNav").empty();
+                        $.each(personalNavList, function (i, val) {
+                            var $li = $("<li id='my-li'></li>");
+                            $("#myCenterNav").append($li);
+                            $li.attr("id", "my-li" + i);
+                            if (i == mineNavIndex) {
+                                $li.attr("class", "my-active");
+                            }
+                            $li.text(personalNavList[i].frontName);
+                            $li.on('click', function () {
+                                $("#my-li" + mineNavIndex).attr("class", "");
+                                $li.attr("class", "my-active");
+                                mineNavIndex = i;
+                                switch (i) {
+                                    case 0:
+                                        getUserInfo();
+                                        $("#myData").show();
+                                        $("#myBlog").hide();
+                                        $("#myShare").hide();
+                                        break;
+                                    case 1:
+                                        getBlogByUserId();
+                                        $("#myData").hide();
+                                        $("#myBlog").show();
+                                        $("#myShare").hide();
+                                        break;
+                                    case 2:
+                                        $("#myData").hide();
+                                        $("#myBlog").hide();
+                                        $("#myShare").show();
+                                        break;
+                                }
+                            });
+
+                        });
+                    }
+                }, function () {
+                    alert("error");
+                })
+            });
+            var avatar = window.localStorage.getItem("avatar");
+            console.log("头像地址 = " + avatar);
+            if (avatar != null || avatar != undefined) {
+                $("#avatar-img").attr("src", avatar);
+            } else {
+                alert("头像获取失败");
+            }
+        } else {
+            console.log("未登录");
+            $("#avatar-btn").attr("href", "./login.html");
+        }
+    }, function (res) {
+        alert("error");
+    })
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+ * 顶部导航栏跳转
+ */
+function clickLogo() {
+    window.location = "/home.html";
+}
+
+
+/**
+ * 设置广告图片跳转
+ */
+function adToUrl() {
+    var url = adInfo[1].frontValue;
+    window.location = url;
+}
+
+
+
+/**
  * 获取用户信息
  */
 function getUserInfo() {
-    let userId = window.localStorage.getItem("uid");
-    let data = {
+    var userId = window.localStorage.getItem("uid");
+    var data = {
         userId: userId
     };
     if (userId != null && userId != undefined) {
@@ -502,8 +469,8 @@ function subString(str, key) {
 
 
 function getBlogByUserId() {
-    let userId = window.localStorage.getItem("uid");
-    let data = {
+    var userId = window.localStorage.getItem("uid");
+    var data = {
         userId: userId,
         pageDo: {
             pageIndex: myBlogPageIndex,
@@ -513,12 +480,12 @@ function getBlogByUserId() {
     if (userId != null && userId != undefined) {
         http(getArticleByUserIdURL, "post", true, data, "json", function (res) {
             console.log(res);
-            let articleList = res.data;
+            var articleList = res.data;
             $.each(articleList, function (i, val) {
                 $md = $("<div style=\"border-bottom: 1px solid #CCCCCC;margin: 10px 20px;padding: 10px 0\">" +
                     "<div>\n" +
                     "<input type='hidden' id='articleId'/>" +
-                    "<span style=\"font-size: 20px\"><a id='articleTitle'></a></span>\n" +
+                    "<span style=\"font-size: 20px\"><a id='articvaritle'></a></span>\n" +
                     "</div>\n" +
                     "<div style=\"display: flex;justify-content: space-between;margin-top: 10px\">\n" +
                     "<div>\n" +
@@ -535,20 +502,20 @@ function getBlogByUserId() {
 
                 $("#myBlog").append($md);
 
-                let dataId = articleList[i].articleId;
-                let dataTitle = articleList[i].articleTitle;
-                let dataCreateTime = articleList[i].articleCreateTime;
-                let dataComment = articleList[i].articleComment;
-                let dataReadNum = articleList[i].articleReadNum;
+                var dataId = articleList[i].articleId;
+                var dataTitle = articleList[i].articvaritle;
+                var dataCreateTime = articleList[i].articleCreateTime;
+                var dataComment = articleList[i].articleComment;
+                var dataReadNum = articleList[i].articleReadNum;
 
                 $("#articleId").attr("id", "articleId" + dataId);
-                $("#articleTitle").attr("id", "articleTitle" + dataId);
+                $("#articvaritle").attr("id", "articvaritle" + dataId);
                 $("#articleCreateTime").attr("id", "articleCreateTime" + dataId);
                 $("#articleComment").attr("id", "articleComment" + dataId);
                 $("#articleReadNum").attr("id", "articleReadNum" + dataId);
 
                 $("#articleId" + dataId).attr("value", articleList[i].articleId);
-                $("#articleTitle" + dataId).text(dataTitle);
+                $("#articvaritle" + dataId).text(dataTitle);
                 $("#articleCreateTime" + dataId).text(dataCreateTime);
                 $("#articleComment" + dataId).text("评论：" + dataComment);
                 $("#articleReadNum" + dataId).text("阅读次数：" + dataReadNum);
@@ -559,4 +526,41 @@ function getBlogByUserId() {
     } else {
         window.location = "./home.html";
     }
+}
+
+function mySroll() {
+    var height = 50;
+
+    $(window).scroll(function () {
+        console.log(1);
+        var scrollTop = $(window).scrollTop();
+        // console.log("距离顶部:", scrollTop);
+        var scrollHeight = $(document).height();
+        // console.log("滚动条高度:", scrollHeight);
+        var windowHeight = $(this).height();
+        // console.log("窗口高度:", windowHeight);
+        var positionValue = (scrollTop + windowHeight) - scrollHeight;
+        // console.log("当前位置:", positionValue);
+
+        if (positionValue == 0) {
+            // 下拉刷新
+            pageIndex++;
+            myBlogPageIndex++;
+            setHtml();
+            setArticle();
+            getBlogByUserId();
+        }
+
+        if (scrollTop > height) {
+            $(".bg-sort-model").css({
+                'position': 'fixed',
+                'top': '0px',
+            });
+        } else {
+            $(".bg-sort-model").css({
+                'position': 'absolute',
+                'top': '10px',
+            });
+        }
+    });
 }
